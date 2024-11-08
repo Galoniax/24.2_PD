@@ -1,0 +1,3 @@
+#Ignorar Carpetas (Muy pesadas)
+postgres_data
+pgadmin_data
