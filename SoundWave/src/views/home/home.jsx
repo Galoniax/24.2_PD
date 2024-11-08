@@ -22,7 +22,7 @@ export function Home() {
                 
             </main>
             <section id='Nosotros' className='mt-[50px] bg-[#ede0d0] w-[100%] min-h-[70vh]'>
-                <div className="container-Nosotros flex justify-center pt-[50px] gap-[80px]">
+                <div className="container-Nosotros flex justify-center pt-[120px] gap-[80px]">
                     <div className="w-[50%] flex flex-col items-end gap-5">
                         <h1 className="textOpenSansRegular tracking-tight text-[#221709] text-[75px] font-bold text-center">¿Quienes somos?</h1>
                         <p className="textOpenSansRegular black text-[16px] text-end max-w-[500px] leading-relaxed">Somos una empresa dedicada a la venta de dispositivos de audio y sonido. Nuestra misión es brindar a nuestros clientes una experiencia de sonido excepcional. Con una amplia variedad de productos y servicios, ofrecemos una amplia gama de opciones para satisfacer sus necesidades de sonido.
@@ -65,7 +65,6 @@ export function Home() {
                     </div>
                 </div>
             </section>
-
         </div>
         
     );
