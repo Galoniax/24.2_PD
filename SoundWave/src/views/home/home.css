@@ -1,0 +1,20 @@
+main {
+    min-height: 20vh;
+}
+
+.product-try {
+    background-color: #F1720C;
+    height: 5vh;
+    overflow: hidden;
+}
+
+.product-try h2 {
+    margin: 0 95px 0 10px;
+    white-space: nowrap;
+}
+
+.product-try img {
+    margin: 0 0 0 20px;
+}
+
+
