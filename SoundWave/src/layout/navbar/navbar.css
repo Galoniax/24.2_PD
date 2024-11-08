@@ -1,0 +1,29 @@
+.container-fluid {
+    background-color: transparent;
+    height: 10vh;
+}
+
+
+.nav-link {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #F1720C;
+    transition: all 0.1s ease-in-out;
+    font-size: 16.2px;
+}
+
+.title-text:hover , filter {
+    font-size: 22.4px;
+    transition: all 0.2s ease-in-out;
+    filter: brightness(0) saturate(100%) invert(42%) sepia(98%) saturate(2223%) hue-rotate(4deg) brightness(103%) contrast(101%);
+}
+
+
+
+.filter {
+    filter: brightness(0) saturate(100%) invert(42%) sepia(98%) saturate(2223%) hue-rotate(4deg) brightness(103%) contrast(101%);
+}
+
