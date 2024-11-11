@@ -3,6 +3,8 @@
 - npm run dev: Inicia la aplicación en modo desarrollo usando Vite.
 - npm run json-server: Inicia el servidor JSON Server para simular una API REST, observando el archivo db.json en el directorio ../backend/db en el puerto 3001.
 
+- npm run start: Inicia ambos comandos (json-server & run dev) con Concurrently.
+
 ## Dependencias 
 ### Principales
 - axios (^1.7.7): Para realizar peticiones HTTP.
@@ -24,6 +26,7 @@
 - globals (^15.11.0): Listado de variables globales en JavaScript.
 - postcss (^8.4.47): Procesador de CSS para transformar estilos.
 - vite (^5.4.10): Empaquetador y servidor de desarrollo rápido.
+- concurrently (^9.1.0): Iniciador de comandos simultáneos.
 
 ## Estilos
 - Este proyecto utiliza Tailwind CSS para el estilo y diseño
@@ -33,4 +36,9 @@
 ### Prettier
 - Prettier para formateo/arreglo de código
 - npm install --save-dev prettier
+
+### Concurrently
+- ("scripts")
+- "start": "concurrently \"npm run dev\" \"npm run json-server\"" (Comandos que se correrán)
+
  
