@@ -1,19 +1,21 @@
 h1 {
-    color: #f0f0f0
+  color: #f0f0f0;
 }
 
 h2 {
-    color: #dbdbdb
+  color: #dbdbdb;
 }
 
-a, li, p{
-    color: #ececec;
+a,
+li,
+p {
+  color: #ececec;
 }
 
 .black {
-    color: #2E2314
+  color: #2e2314;
 }
 
 .title-text {
-    color: #ffffff
+  color: #ffffff;
 }
