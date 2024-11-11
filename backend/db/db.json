@@ -1,10 +1,347 @@
 {
-    "users": [
+  "users": [
+    {
+      "id": "1",
+      "username": "Admin",
+      "email": "admin@example.com",
+      "password": "123456",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "User",
+      "email": "user@example.com",
+      "password": "654321",
+      "role": "user"
+    }
+  ],
+
+  "reviews": [
+    {
+      "id": "1",
+      "userId": "2",
+      "productId": "1",
+      "rating": 5,
+      "comment": "Excelente producto, superó mis expectativas.",
+      "date": "2024-11-10"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "productId": "2",
+      "rating": 4,
+      "comment": "Buena calidad, aunque el envío fue un poco lento.",
+      "date": "2024-11-08"
+    },
+    {
+      "id": "3",
+      "userId": "2",
+      "productId": "3",
+      "rating": 3,
+      "comment": "El producto es decente, pero podría mejorar.",
+      "date": "2024-11-05"
+    }
+  ],
+
+
+ 
+  "categories": [
+    {
+      "id": 1,
+      "name": "Auriculares y Audífonos",
+      "subcategories": [
         {
-            "id": 1,
-            "name": "John Doe",
-            "email": "qBbM1@example.com",
-            "password": "password123"
+          "id": 1,
+          "name": "In-ear"
+        },
+        {
+          "id": 2,
+          "name": "Over-ear"
+        },
+        {
+          "id": 3,
+          "name": "De alta fidelidad"
+        },
+        {
+          "id": 4,
+          "name": "De gaming"
+        },
+        {
+          "id": 5,
+          "name": "Bluetooth"
         }
-    ]
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Altavoces",
+      "subcategories": [
+        {
+          "id": 6,
+          "name": "Portátiles"
+        },
+        {
+          "id": 7,
+          "name": "De escritorio"
+        },
+        {
+          "id": 8,
+          "name": "Smart speakers"
+        },
+        {
+          "id": 9,
+          "name": "De alta fidelidad"
+        },
+        {
+          "id": 10,
+          "name": "Subwoofers"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Equipos de Grabación y Producción Musical",
+      "subcategories": [
+        {
+          "id": 11,
+          "name": "Micrófonos"
+        },
+        {
+          "id": 12,
+          "name": "Interfaces de audio"
+        },
+        {
+          "id": 13,
+          "name": "Monitores de estudio"
+        },
+        {
+          "id": 14,
+          "name": "Controladores MIDI"
+        },
+        {
+          "id": 15,
+          "name": "Software de producción"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Instrumentos Musicales",
+      "subcategories": [
+        {
+          "id": 16,
+          "name": "Guitarras"
+        },
+        {
+          "id": 17,
+          "name": "Teclados/Pianos"
+        },
+        {
+          "id": 18,
+          "name": "Baterías y Percusión"
+        },
+        {
+          "id": 19,
+          "name": "Viento y Cuerdas"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Accesorios",
+      "subcategories": [
+        {
+          "id": 20,
+          "name": "Cables y Conectores"
+        },
+        {
+          "id": 21,
+          "name": "Fundas y Estuches"
+        },
+        {
+          "id": 22,
+          "name": "Soportes de equipo"
+        },
+        {
+          "id": 23,
+          "name": "Mezcladores y Amplificadores"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Vinilos y CDs",
+      "subcategories": [
+        {
+          "id": 24,
+          "name": "Ediciones limitadas"
+        },
+        {
+          "id": 25,
+          "name": "Álbumes populares"
+        },
+        {
+          "id": 26,
+          "name": "Álbumes de artistas emergentes"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Tecnología y Gadgets",
+      "subcategories": [
+        {
+          "id": 27,
+          "name": "Smartwatches"
+        },
+        {
+          "id": 28,
+          "name": "Auriculares inteligentes"
+        },
+        {
+          "id": 29,
+          "name": "Sistemas de sonido inteligentes"
+        }
+      ]
+    }
+  ],
+
+
+  "products": [
+    {
+      "id": 1,
+      "name": "Auriculares In-ear Premium",
+      "description": "Auriculares compactos de alta calidad con cancelación de ruido y sonido envolvente.",
+      "categoryId": 1,
+      "subcategoryId": 1,
+      "price": 50.99,
+      "stock": 100
+    },
+    {
+      "id": 2,
+      "name": "Auriculares Over-ear Gaming",
+      "description": "Auriculares grandes con micrófono integrado y sonido envolvente 7.1 para gamers.",
+      "categoryId": 1,
+      "subcategoryId": 2,
+      "price": 99.99,
+      "stock": 50
+    },
+    {
+      "id": 3,
+      "name": "Auriculares Bluetooth",
+      "description": "Auriculares inalámbricos con conexión Bluetooth y batería de larga duración.",
+      "categoryId": 1,
+      "subcategoryId": 5,
+      "price": 75.50,
+      "stock": 200
+    },
+    {
+      "id": 4,
+      "name": "Altavoz Portátil Resistente al Agua",
+      "description": "Altavoz portátil de alta potencia con resistencia al agua, ideal para exteriores.",
+      "categoryId": 2,
+      "subcategoryId": 6,
+      "price": 120.00,
+      "stock": 70
+    },
+    {
+      "id": 5,
+      "name": "Altavoz de Escritorio Compacto",
+      "description": "Altavoz pequeño pero potente, perfecto para el escritorio o áreas pequeñas.",
+      "categoryId": 2,
+      "subcategoryId": 7,
+      "price": 89.99,
+      "stock": 150
+    },
+    {
+      "id": 6,
+      "name": "Micrófono de Condensador",
+      "description": "Micrófono de condensador de estudio con excelente captación de sonido y alta sensibilidad.",
+      "categoryId": 3,
+      "subcategoryId": 11,
+      "price": 150.00,
+      "stock": 30
+    },
+    {
+      "id": 7,
+      "name": "Controlador MIDI Profesional",
+      "description": "Controlador MIDI con 16 pads, 8 perillas y 49 teclas para producción musical.",
+      "categoryId": 3,
+      "subcategoryId": 14,
+      "price": 299.99,
+      "stock": 20
+    },
+    {
+      "id": 8,
+      "name": "Guitarra Acústica",
+      "description": "Guitarra acústica de madera de alta calidad, perfecta para principiantes y expertos.",
+      "categoryId": 4,
+      "subcategoryId": 16,
+      "price": 199.99,
+      "stock": 40
+    },
+    {
+      "id": 9,
+      "name": "Teclado Electrónico Portátil",
+      "description": "Teclado portátil con 61 teclas y múltiples opciones de sonido y efectos.",
+      "categoryId": 4,
+      "subcategoryId": 17,
+      "price": 220.00,
+      "stock": 25
+    },
+    {
+      "id": 10,
+      "name": "Cable de Audio de Alta Fidelidad",
+      "description": "Cable de conexión de alta fidelidad para sistemas de audio y home theaters.",
+      "categoryId": 5,
+      "subcategoryId": 20,
+      "price": 15.99,
+      "stock": 200
+    },
+    {
+      "id": 11,
+      "name": "Funda para Guitarra Acústica",
+      "description": "Funda acolchada y resistente, ideal para transportar guitarras acústicas.",
+      "categoryId": 5,
+      "subcategoryId": 21,
+      "price": 29.99,
+      "stock": 100
+    },
+    {
+      "id": 12,
+      "name": "Edición Limitada - Album de Vinilo",
+      "description": "Álbum de vinilo de edición limitada de un famoso artista, ideal para coleccionistas.",
+      "categoryId": 6,
+      "subcategoryId": 24,
+      "price": 50.00,
+      "stock": 10
+    },
+    {
+      "id": 13,
+      "name": "Álbum Popular - CD",
+      "description": "Álbum en formato CD de uno de los artistas más populares del momento.",
+      "categoryId": 6,
+      "subcategoryId": 25,
+      "price": 12.99,
+      "stock": 100
+    },
+    {
+      "id": 14,
+      "name": "Smartwatch Deportivo",
+      "description": "Smartwatch con múltiples funciones deportivas, resistente al agua.",
+      "categoryId": 7,
+      "subcategoryId": 27,
+      "price": 129.99,
+      "stock": 50
+    },
+    {
+      "id": 15,
+      "name": "Sistema de Sonido Inteligente",
+      "description": "Sistema de sonido inteligente con conectividad Wi-Fi y control de voz.",
+      "categoryId": 7,
+      "subcategoryId": 29,
+      "price": 249.99,
+      "stock": 35
+    }
+  ]
 }
