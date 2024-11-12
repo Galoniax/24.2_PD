@@ -7,7 +7,6 @@ export const NAVBAR_ROUTES = [
   { path: `${ROUTES.HOME}#Productos`, name: "Productos" },
   { path: `${ROUTES.HOME}#Reviews`, name: "Reseñas" },
   { path: ROUTES.CATALOGO, name: "Catálogo", role: "admin, user" },
-  { path: ROUTES.CARRITO, name: "Carrito", role: "user" },
   { path: ROUTES.LOGIN },
   { path: ROUTES.REGISTER },
 ];

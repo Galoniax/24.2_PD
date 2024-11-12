@@ -5,5 +5,5 @@ export const ROUTES = {
   CATALOGO: "/catalogo",
   PROFILE: "/profile",
   PRODUCTO: "/producto/:id",
-  CARRITO: "/carrito",
+  AGREGAR_PRODUCTO: "/agregar-producto",
 };

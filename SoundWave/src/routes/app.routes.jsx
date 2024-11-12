@@ -9,11 +9,13 @@ import { Login } from "../views/login/login.jsx";
 import { Register } from "../views/register/register.jsx";
 import { Catalogo } from "../views/catalogo/catalogo.jsx";
 import { AuthProvider } from "../hooks/useAuth";
+import { CartProvider } from "../context/CartContext";
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <CartProvider>
         <ToastContainer />
         <Layout>
           <Routes>
@@ -23,6 +25,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.CATALOGO} element={<Catalogo />} />
           </Routes>
         </Layout>
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   );
