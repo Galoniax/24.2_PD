@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom"; // Importa el componente Link de React Router, que permite crear enlaces
-import { useEffect, useState } from "react"; // Importa los hooks de React para manejar efectos secundarios y estado
+import { useEffect, useState, useContext } from "react"; // Importa los hooks de React para manejar efectos secundarios y estado
 import { NAVBAR_ROUTES } from "../../constants/navbar-routes"; // Importa la constante que contiene las rutas de la barra de navegación
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate de React Router para redirigir al usuario a diferentes rutas
 import { useAuth } from "../../hooks/useAuth";
 import { filterRoutesByRole } from "../../constants/navbar-routes";
 import { useLocation } from "react-router-dom";
+import { CartContext } from '../../context/CartContext'; // Import CartContext
+import { Sidebar } from "../sidebar/sidebar"; // Importa el componente Sidebar
 
 
 import "./navbar.css"; // Importa los estilos CSS para la barra de navegación
 
 export function Navbar() {
+  const { cart, toggleSidebar } = useContext(CartContext); // Now use useContext correctly with CartContext
   const navigate = useNavigate(); // Crea una instancia de useNavigate, que permite navegar a diferentes rutas de la aplicación
   const [scrolled, setScrolled] = useState(false); // Inicializa el estado 'scrolled' para saber si el usuario ha desplazado la página
   const { isLoggedIn, logout } = useAuth();
@@ -17,6 +20,7 @@ export function Navbar() {
   const location = useLocation();
   const filteredRoutes = filterRoutesByRole();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Estado para controlar si el sidebar está abierto
   
 
   // Este useEffect maneja el evento de desplazamiento (scroll) de la ventana
@@ -47,6 +51,10 @@ export function Navbar() {
         if (element) element.scrollIntoView({ behavior: "smooth" }); // Desplaza la página suavemente a la sección
       }, 100); // Añade un pequeño retraso para asegurarse de que la navegación haya sido ejecutada antes de hacer el desplazamiento
     }
+  };
+
+  const toggleSidebarVisibility = () => {
+    setIsSidebarOpen(!isSidebarOpen); // Alterna la visibilidad del sidebar
   };
 
   return (
@@ -126,6 +134,14 @@ export function Navbar() {
             >
               Cerrar Sesión
             </button>
+            
+            <button
+             onClick={toggleSidebarVisibility} // Abre o cierra el sidebar
+            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            Ver carrito ({cart.length}) {/* Muestra la cantidad de productos en el carrito */}
+          </button>
+        
           </div>
         ) : (
           <div className="auth-buttons flex gap-4">
@@ -153,7 +169,10 @@ export function Navbar() {
             </Link>
           </div>
         )}
+        
       </div>
+      {/* Sidebar */}
+      {isSidebarOpen && <Sidebar onClose={toggleSidebarVisibility} />}
     </nav>
   );
 }

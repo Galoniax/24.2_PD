@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth"; // Importa el hook de autenticación actualizado
 import "./login.css";
-import PlaylistPlayer from "../../components/spotify/PlaylistPlayer";
+
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -51,7 +51,7 @@ export function Login() {
             Iniciar Sesión
           </h1>
 
-          <PlaylistPlayer />
+         
 
           <form
             onSubmit={handleSubmit}
