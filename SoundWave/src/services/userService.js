@@ -1,6 +1,6 @@
 import { axiosInterceptor } from "../interceptor/axios-interceptor";
 
-export const getUsers = async () => {
+export const fetchAllUsers = async () => {
   try {
     const response = await axiosInterceptor.get("/users");
     return response.data;
