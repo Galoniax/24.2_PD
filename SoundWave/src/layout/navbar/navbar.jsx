@@ -1,27 +1,27 @@
 import { Link } from "react-router-dom"; // Importa el componente Link de React Router, que permite crear enlaces
 import { useEffect, useState, useContext } from "react"; // Importa los hooks de React para manejar efectos secundarios y estado
-import { NAVBAR_ROUTES } from "../../constants/navbar-routes"; // Importa la constante que contiene las rutas de la barra de navegación
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate de React Router para redirigir al usuario a diferentes rutas
 import { useAuth } from "../../hooks/useAuth";
 import { filterRoutesByRole } from "../../constants/navbar-routes";
 import { useLocation } from "react-router-dom";
-import { CartContext } from '../../context/CartContext'; // Import CartContext
+import { CartContext } from "../../context/CartContext"; // Import CartContext
 import { Sidebar } from "../sidebar/sidebar"; // Importa el componente Sidebar
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 import "./navbar.css"; // Importa los estilos CSS para la barra de navegación
 
 export function Navbar() {
-  const { cart, toggleSidebar } = useContext(CartContext); // Now use useContext correctly with CartContext
+  const { cart } = useContext(CartContext); // Now use useContext correctly with CartContext
   const navigate = useNavigate(); // Crea una instancia de useNavigate, que permite navegar a diferentes rutas de la aplicación
   const [scrolled, setScrolled] = useState(false); // Inicializa el estado 'scrolled' para saber si el usuario ha desplazado la página
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, user } = useAuth();
 
   const location = useLocation();
   const filteredRoutes = filterRoutesByRole();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Estado para controlar si el sidebar está abierto
-  
 
   // Este useEffect maneja el evento de desplazamiento (scroll) de la ventana
   useEffect(() => {
@@ -34,9 +34,7 @@ export function Navbar() {
     return () => {
       window.removeEventListener("scroll", handleScroll); // Limpia el evento cuando el componente se desmonta
     };
- 
-
-  }, []); 
+  }, []);
 
   // Esta función maneja el desplazamiento suave a una sección específica de la página
   const handleScrollToSection = (path) => {
@@ -108,18 +106,18 @@ export function Navbar() {
         {/* Botones de inicio de sesión y registro */}
         {isLoggedIn ? (
           <div className="auth-buttons flex gap-4">
-            {/*<Link
-              to="/profile"
-              className={`nav-link login-button px-4 py-2
-                            ${
-                              scrolled
-                                ? "text-[#131313] outline-dashed outline-1 outline-[#ff9500] hover:outline-2"
-                                : "text-[#f0f0f0] outline-dashed outline-1 outline-[#ff9500] hover:outline-2 hover:outline-[#ffffff]"
-                            } rounded-[5px]`}
-            >
-              Mi Perfil
-            </Link>
-            */}
+
+            {user.role != "admin" && (
+               <button
+               onClick={toggleSidebarVisibility} // Abre o cierra el sidebar
+               className="bg-[#ff9500] text-white px-2 py-1 rounded-md"
+             >
+               <FontAwesomeIcon icon={faCartShopping} /> ({cart.length})
+               {/* Muestra la cantidad de productos en el carrito */}
+             </button>
+              
+            )}
+           
             <button
               onClick={logout}
               className={`nav-link login-button px-4 py-2
@@ -128,20 +126,14 @@ export function Navbar() {
                                 ? "text-[#131313] outline-dashed outline-1 outline-[#ff9500] hover:outline-2"
                                 : "text-[#f0f0f0] outline-dashed outline-1 outline-[#ff9500] hover:outline-2 hover:outline-[#ffffff]"
                             }
-                            ${location.pathname === "/catalogo" 
-                              ? "text-[#f0f0f0]" 
-                              : "text-[#131313]"} rounded-[5px]`}
+                            ${
+                              location.pathname === "/catalogo"
+                                ? "text-[#f0f0f0]"
+                                : "text-[#131313]"
+                            } rounded-[5px]`}
             >
               Cerrar Sesión
             </button>
-            
-            <button
-             onClick={toggleSidebarVisibility} // Abre o cierra el sidebar
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          >
-            Ver carrito ({cart.length}) {/* Muestra la cantidad de productos en el carrito */}
-          </button>
-        
           </div>
         ) : (
           <div className="auth-buttons flex gap-4">
@@ -169,7 +161,6 @@ export function Navbar() {
             </Link>
           </div>
         )}
-        
       </div>
       {/* Sidebar */}
       {isSidebarOpen && <Sidebar onClose={toggleSidebarVisibility} />}

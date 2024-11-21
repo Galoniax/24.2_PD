@@ -1,97 +1,96 @@
 import React from "react";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { usePucharses } from "../../hooks/usePucharses";
 import { useAuth } from "../../hooks/useAuth";
 
-export function Sidebar({ onClose }) {
-    const { createPurchase } = usePucharses();
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import "./sidebar.css";
 
-    
-    const { user } = useAuth();
-  const { cart, clearCart } = useContext(CartContext); // Accede al carrito desde el contexto
+
+export function Sidebar({ onClose }) {
+  const { createPurchase } = usePucharses();
+
+  const { user } = useAuth();
+  const { cart, clearCart, removeFromCart } = useContext(CartContext); // Accede al carrito desde el contexto
 
   //Funcion para multiplicar el precio por la cantidad de productos en el carrito
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
-  //Remove the product from the cart
-  const { removeFromCart } = useContext(CartContext);
 
-
-
-  
- const handlePurchase = async () => {
+  const handlePurchase = async () => {
     try {
       const purchase = await createPurchase(user.id, cart);
       console.log("Compra realizada:", purchase);
 
-       clearCart();
-    } 
-    catch (error) {
+      clearCart();
+    } catch (error) {
       console.error("Error al realizar la compra:", error);
     }
-}
- 
-  
+  };
 
   return (
-    
     <div
-    
-      className="sidebar fixed top-0 right-0 w-[300px] h-full bg-white shadow-lg p-4 transition-transform duration-300"
-      style={{ transform: "translateX(0)" }}
+      className={`sidebar fixed top-0 right-0 w-[350px] h-full bg-[#2b2b2b] p-4 shadow-lg transition-transform duration-800`}
     >
+      <div className="flex justify-between bg-[#ff8928]   border-[#c5c5c5] px-2 items-center">
+        <img
+            src="../../src/assets/icons/IconMain64.png"
+            className="filter1"
+            alt="Logo"
+          />
+        <h2 className="text-[17px] text-[#ffffff] p-4 font-bold">Carrito de {user.username}</h2>
         
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold">Carrito</h2>
-        <button
-          onClick={onClose}
-          className="text-red-500 font-bold"
-        >
-          Cerrar
-        </button>
       </div>
 
       <div className="cart-items mt-4">
         {cart.length === 0 ? (
-          <p>No hay productos en el carrito.</p>
+          <p className="text-[15px]">No hay productos en el carrito.</p>
         ) : (
           cart.map((item, index) => (
-            <div key={index} className="flex items-center mb-4">
-              
+            <div key={index} className="bg-[#00000018] border-[2px]  border-[#c5c5c5] mb-1 p-3">
               <div className="ml-4">
+                <p className="text-[15px] text-[#ffffff] font-bold">{item.name}</p>
+                <p className="text-[14px] mt-3 text-[#ffffff]">Precio: ${item.price}</p>
+                <p className="text-[14px] text-[#ffffff]">Cantidad: {item.quantity}</p>
 
-                <p className="text-lg font-semibold">{item.name}</p>
-                <p className="text-gray-600">Precio: ${item.price}</p>
-                <p className="text-gray-600">Subtotal: ${totalPrice}</p>
-                <p>Cantidad: {item.quantity}</p>
+                <div className="flex justify-between items-center">
+                <p className="text-[15px]  mt-4 text-[#ffffff] font-semibold">Subtotal: ${item.price * item.quantity}</p>
                 
+
                 <button
                   onClick={() => removeFromCart(item.id)}
-                  className="text-red-500 font-bold mt-2"
+                  className="bg-red-500 p-1 px-2 text-white font-bold rounded-md"
                 >
-                  Eliminar
+                  <FontAwesomeIcon icon={faTrash} style={{color: "#ffffff",}} />
                 </button>
-
+                
+                </div>
               </div>
             </div>
           ))
         )}
-         {cart.length > 0 && (
-        <div className="mt-4">
-          <p className="font-bold">Total: ${totalPrice}</p>
-          <button
-            onClick={handlePurchase}
-            className="bg-blue-500 text-white w-full py-2 mt-4 rounded"
-          >
-            Comprar
-          </button>
-        </div>
-      )}
-    
+        {cart.length > 0 && (
+          <div className="mt-4">
+            <p className="font-bold text-[16px] text-[#ffffff] mb-[30px]">Total: ${totalPrice}</p>
+            <button
+              onClick={handlePurchase}
+              className="bg-[#ff8928] text-[14px] text-white font-bold w-full py-2 mt-4 rounded"
+            >
+              Comprar
+            </button>
+            <button onClick={onClose} className="text-[#ffffff] text-[14px] bg-red-500 w-full rounded-md py-2 mt-5 p-1 px-3 font-bold">
+              Cerrar
+            </button>
+            
+          </div>
+        )}
+        
       </div>
     </div>
   );
-
 }
-
