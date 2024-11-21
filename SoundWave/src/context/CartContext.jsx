@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import { toast } from "react-toastify";
 
 // Create the CartContext
 const CartContext = createContext();
@@ -41,6 +42,7 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((product) => product.id !== productId));
+    toast.success("Producto eliminado del carrito")
   };
 
   const toggleSidebar = () => {
