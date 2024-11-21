@@ -8,12 +8,18 @@ import { Home } from "../views/home/home.jsx";
 import { Login } from "../views/login/login.jsx";
 import { Register } from "../views/register/register.jsx";
 import { Catalogo } from "../views/catalogo/catalogo.jsx";
+import { Product } from "../views/producto/producto.jsx";
+
 import { AuthProvider } from "../hooks/useAuth";
 import { CartProvider } from "../context/CartContext";
+
+
+
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
+    
       <AuthProvider>
         <CartProvider>
         <ToastContainer />
@@ -23,6 +29,7 @@ const AppRoutes = () => {
             <Route path={ROUTES.REGISTER} element={<Register />} />
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.CATALOGO} element={<Catalogo />} />
+            <Route path={ROUTES.PRODUCTO} element={<Product />} />
           </Routes>
         </Layout>
         </CartProvider>
