@@ -1,9 +1,10 @@
-import { fetchAllReviews, fetchReviewsByProductId } from "../services/reviewService";
+import { fetchAllReviews, fetchReviewsByProductId, createReview } from "../services/reviewService";
 
 export const useReviews = () => {
     return {
         fetchAllReviews,
-        fetchReviewsByProductId
+        fetchReviewsByProductId,
+        createReview
     }
 
 };
