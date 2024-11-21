@@ -1,0 +1,27 @@
+#relatedProducts {
+    padding-bottom: 20px;
+    overflow-x: hidden; /* Oculta el scrollbar por defecto */
+    transition: padding 0.3s ease, background-color 0.3s ease;
+}
+
+#relatedProducts:hover {
+    overflow-x: auto;
+    padding-bottom: 30px; /* Cambia ligeramente el padding para simular movimiento */
+    background-color: rgba(236, 236, 236, 0.13); /* Efecto visual adicional */
+}
+
+#relatedProducts::-webkit-scrollbar {
+    width: 0.5em;
+    height: 7px;
+    transition: background-color 0.3s ease; /* Suaviza el cambio del color */
+}
+
+#relatedProducts::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #d3d3d3e0;
+}
+
+#relatedProducts::-webkit-scrollbar-thumb {
+    background-color: #202020;
+    border-radius: 10px;
+}
