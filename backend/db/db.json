@@ -16,109 +16,32 @@
     }
   ],
   "reviews": [
-    {
-      "id": "1",
-      "userId": "2",
-      "productId": 1,
-      "rating": 5,
-      "comment": "Excelente producto, superó mis expectativas.",
-      "date": "2024-11-10"
-    },
-    {
-      "id": "2",
-      "userId": "1",
-      "productId": 1,
-      "rating": 4,
-      "comment": "Buena calidad, aunque el envío fue un poco lento.",
-      "date": "2024-11-08"
-    },
-    {
-      "id": "3",
-      "userId": "2",
-      "productId": 1,
-      "rating": 3,
-      "comment": "El producto es decente, pero podría mejorar.",
-      "date": "2024-11-05"
-    }
+    
   ],
-  "purchases": [
-    {
-      "userId": 3,
-      "products": [
-        {
-          "productId": 1,
-          "productName": "Pepe",
-          "productPrice": 20200,
-          "quantity": 1
-        },
-        {
-          "productId": 1,
-          "productName": "Pepe",
-          "productPrice": 20200,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 20400,
-      "id": "14b6"
-    },
-    {
-      "id": "1c72",
-      "userId": "1",
-      "products": [
-        {
-          "id": 1,
-          "name": "Auriculares In-ear Premium",
-          "description": "Auriculares compactos de alta calidad con cancelación de ruido y sonido envolvente.",
-          "categoryId": 1,
-          "subcategoryId": 1,
-          "price": 50.99,
-          "stock": 100,
-          "quantity": 1
-        }
-      ],
-      "totalPrice": 50.99
-    },
-    {
-      "id": "d466",
-      "userId": "1",
-      "products": [
-        {
-          "id": 1,
-          "name": "Auriculares In-ear Premium",
-          "description": "Auriculares compactos de alta calidad con cancelación de ruido y sonido envolvente.",
-          "categoryId": 1,
-          "subcategoryId": 1,
-          "price": 50.99,
-          "stock": 100,
-          "quantity": 3
-        }
-      ],
-      "totalPrice": 152.97
-    }
-  ],
+  "purchases": [],
   "categories": [
     {
       "id": "1",
       "name": "Auriculares y Audífonos",
       "subcategories": [
         {
-          "id": 1,
+          "id": "1",
           "name": "In-ear"
         },
         {
-          "id": 2,
+          "id": "2",
           "name": "Over-ear"
         },
         {
-          "id": 3,
+          "id": "3",
           "name": "De alta fidelidad"
         },
         {
-          "id": 4,
+          "id": "4",
           "name": "De gaming"
         },
         {
-          "id": 5,
+          "id": "5",
           "name": "Bluetooth"
         }
       ]
@@ -128,23 +51,23 @@
       "name": "Altavoces",
       "subcategories": [
         {
-          "id": 6,
+          "id": "6",
           "name": "Portátiles"
         },
         {
-          "id": 7,
+          "id": "7",
           "name": "De escritorio"
         },
         {
-          "id": 8,
+          "id": "8",
           "name": "Smart speakers"
         },
         {
-          "id": 9,
+          "id": "9",
           "name": "De alta fidelidad"
         },
         {
-          "id": 10,
+          "id": "10",
           "name": "Subwoofers"
         }
       ]
@@ -154,23 +77,23 @@
       "name": "Equipos de Grabación y Producción Musical",
       "subcategories": [
         {
-          "id": 11,
+          "id": "11",
           "name": "Micrófonos"
         },
         {
-          "id": 12,
+          "id": "12",
           "name": "Interfaces de audio"
         },
         {
-          "id": 13,
+          "id": "13",
           "name": "Monitores de estudio"
         },
         {
-          "id": 14,
+          "id": "14",
           "name": "Controladores MIDI"
         },
         {
-          "id": 15,
+          "id": "15",
           "name": "Software de producción"
         }
       ]
@@ -180,19 +103,19 @@
       "name": "Instrumentos Musicales",
       "subcategories": [
         {
-          "id": 16,
+          "id": "16",
           "name": "Guitarras"
         },
         {
-          "id": 17,
+          "id": "17",
           "name": "Teclados/Pianos"
         },
         {
-          "id": 18,
+          "id": "18",
           "name": "Baterías y Percusión"
         },
         {
-          "id": 19,
+          "id": "19",
           "name": "Viento y Cuerdas"
         }
       ]
@@ -202,19 +125,19 @@
       "name": "Accesorios",
       "subcategories": [
         {
-          "id": 20,
+          "id": "20",
           "name": "Cables y Conectores"
         },
         {
-          "id": 21,
+          "id": "21",
           "name": "Fundas y Estuches"
         },
         {
-          "id": 22,
+          "id": "22",
           "name": "Soportes de equipo"
         },
         {
-          "id": 23,
+          "id": "23",
           "name": "Mezcladores y Amplificadores"
         }
       ]
@@ -224,15 +147,15 @@
       "name": "Vinilos y CDs",
       "subcategories": [
         {
-          "id": 24,
+          "id": "24",
           "name": "Ediciones limitadas"
         },
         {
-          "id": 25,
+          "id": "25",
           "name": "Álbumes populares"
         },
         {
-          "id": 26,
+          "id": "26",
           "name": "Álbumes de artistas emergentes"
         }
       ]
@@ -242,15 +165,15 @@
       "name": "Tecnología y Gadgets",
       "subcategories": [
         {
-          "id": 27,
+          "id": "27",
           "name": "Smartwatches"
         },
         {
-          "id": 28,
+          "id": "28",
           "name": "Auriculares inteligentes"
         },
         {
-          "id": 29,
+          "id": "29",
           "name": "Sistemas de sonido inteligentes"
         }
       ]
@@ -258,93 +181,49 @@
   ],
   "products": [
     {
-      "name": "Micrófono de Condensador",
-      "description": "Micrófono de condensador de estudio con excelente captación de sonido y alta sensibilidad.",
-      "price": "151",
-      "categoryId": 3,
-      "subcategoryId": 11,
-      "imageUrl": "https://png.pngtree.com/png-vector/20240331/ourmid/pngtree-studio-condenser-microphone-on-transparent-background-png-image_12253527.png",
-      "id": "6"
+      "id": "1",
+      "name": "Laptop Ultraliviana XYZ",
+      "description": "Laptop ideal para trabajo remoto con batería de larga duración y pantalla de alta definición.",
+      "price": "1200.99",
+      "imageURL": "data:image/jpeg;base64,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",
+      "categoryId": "3",
+      "subcategoryId": "15"
     },
     {
-      "name": "Controlador MIDI Profesional",
-      "description": "Controlador MIDI con 16 pads, 8 perillas y 49 teclas para producción musical.",
-      "price": "299.32323",
-      "categoryId": 3,
-      "subcategoryId": 14,
-      "id": "7"
+      "id": "2",
+      "name": "Auriculares Inalámbricos ABC",
+      "description": "Auriculares con cancelación de ruido activa y sonido envolvente.",
+      "price": "199.99",
+      "imageURL": "data:image/jpeg;base64,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",
+      "categoryId": "1",
+      "subcategoryId": "2"
     },
     {
-      "id": "8",
-      "name": "Guitarra Acústica",
-      "description": "Guitarra acústica de madera de alta calidad, perfecta para principiantes y expertos.",
-      "categoryId": 4,
-      "subcategoryId": 16,
-      "price": 199.99,
-      "stock": 40
+      "id": "3",
+      "name": "Smartwatch Modelo DEF",
+      "description": "Smartwatch con funciones de monitoreo de salud, GPS integrado y resistente al agua.",
+      "price": "299.50",
+      "imageURL": "data:image/jpeg;base64,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",
+      "categoryId": "7",
+      "subcategoryId": "27"
     },
     {
-      "id": "9",
-      "name": "Teclado Electrónico Portátil",
-      "description": "Teclado portátil con 61 teclas y múltiples opciones de sonido y efectos.",
-      "categoryId": 4,
-      "subcategoryId": 17,
-      "price": 220,
-      "stock": 25
+      "id": "4",
+      "name": "Monitor 4K UltraWide",
+      "description": "Monitor de 34 pulgadas con resolución 4K y soporte para HDR10.",
+      "price": "799.00",
+      "imageURL": "https://images.philips.com/is/image/philipsconsumer/f49db609e97544ee906ab014013253d9?$pnglarge$&wid=1250",
+      "categoryId": "3",
+      "subcategoryId": "13"
     },
     {
-      "id": "10",
-      "name": "Cable de Audio de Alta Fidelidad",
-      "description": "Cable de conexión de alta fidelidad para sistemas de audio y home theaters.",
-      "categoryId": 5,
-      "subcategoryId": 20,
-      "price": 15.99,
-      "stock": 200
-    },
-    {
-      "id": "11",
-      "name": "Funda para Guitarra Acústica",
-      "description": "Funda acolchada y resistente, ideal para transportar guitarras acústicas.",
-      "categoryId": 5,
-      "subcategoryId": 21,
-      "price": 29.99,
-      "stock": 100
-    },
-    {
-      "id": "12",
-      "name": "Edición Limitada - Album de Vinilo",
-      "description": "Álbum de vinilo de edición limitada de un famoso artista, ideal para coleccionistas.",
-      "categoryId": 6,
-      "subcategoryId": 24,
-      "price": 50,
-      "stock": 10
-    },
-    {
-      "id": "13",
-      "name": "Álbum Popular - CD",
-      "description": "Álbum en formato CD de uno de los artistas más populares del momento.",
-      "categoryId": 6,
-      "subcategoryId": 25,
-      "price": 12.99,
-      "stock": 100
-    },
-    {
-      "id": "14",
-      "name": "Smartwatch Deportivo",
-      "description": "Smartwatch con múltiples funciones deportivas, resistente al agua.",
-      "categoryId": 7,
-      "subcategoryId": 27,
-      "price": 129.99,
-      "stock": 50
-    },
-    {
-      "id": "15",
-      "name": "Sistema de Sonido Inteligente",
-      "description": "Sistema de sonido inteligente con conectividad Wi-Fi y control de voz.",
-      "categoryId": 7,
-      "subcategoryId": 29,
-      "price": 249.99,
-      "stock": 35
+      "id": "5",
+      "name": "Teclado Mecánico RGB",
+      "description": "Teclado mecánico con switches intercambiables y retroiluminación RGB.",
+      "price": "32",
+      "imageURL": "https://m.media-amazon.com/images/I/618zZ7u3sUL._AC_SL1500_.jpg",
+      "categoryId": "3",
+      "subcategoryId": "15"
     }
   ]
 }

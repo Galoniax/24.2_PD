@@ -1,0 +1,27 @@
+.slidecontainer .slider {
+    appearance: none; /* Elimina el estilo predeterminado */
+    width: 100%;
+    height: 3px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  
+  .slidecontainer .slider:hover {
+    background: #ccc;
+  }
+  
+  /* Personalización del thumb (Webkit-based) */
+  .slidecontainer .slider::-webkit-slider-thumb {
+    appearance: none;
+    background: #797979;
+    border: none;
+    outline: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%; /* Hace el thumb circular */
+    cursor: pointer;
+    
+  }

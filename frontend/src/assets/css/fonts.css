@@ -1,0 +1,41 @@
+@font-face {
+  font-family: "RedHatDisplayRegular";
+  src: url(../fonts/RedHatDisplay-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "RedHatDisplayMedium";
+  src: url(../fonts/RedHatDisplay-Medium.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSansBold";
+  src: url(../fonts/NunitoSans_7pt-Bold.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSansMedium";
+  src: url(../fonts/NunitoSans_7pt-Medium.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSansRegular";
+  src: url(../fonts/NunitoSans_7pt-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NunitoSansLight";
+  src: url(../fonts/NunitoSans_7pt-Light.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
