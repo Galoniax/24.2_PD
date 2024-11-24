@@ -27,11 +27,17 @@
 - postcss (^8.4.47): Procesador de CSS para transformar estilos.
 - vite (^5.4.10): Empaquetador y servidor de desarrollo rápido.
 - concurrently (^9.1.0): Iniciador de comandos simultáneos.
+  
+- fontawesome/fontawesome-svg-core (^6.6.0): Es el núcleo de Font Awesome para trabajar con íconos en formato SVG. Proporciona las herramientas necesarias para integrar íconos en aplicaciones modernas.
+- fontawesome/free-brands-svg-icons (^6.7.1): Colección de íconos de marcas disponibles en Font Awesome, como logos de empresas (GitHub, Facebook, etc.).
+- fontawesome/free-solid-svg-icons (^6.6.0): Colección de íconos sólidos (sin contorno) ofrecidos por Font Awesome.
+- fontawesome/react-fontawesome (^0.2.2):Integración específica de Font Awesome con React, permitiendo el uso sencillo de sus íconos como componentes de React.
 
 ## Estilos
 - Este proyecto utiliza Tailwind CSS para el estilo y diseño
 - npm install -D tailwindcss postcss autoprefixer
 - npx tailwindcss init -p
+- pnpm i --save @fortawesome/fontawesome-svg-core
 
 ### Prettier
 - Prettier para formateo/arreglo de código
