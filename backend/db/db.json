@@ -13,12 +13,37 @@
       "email": "user@example.com",
       "password": "654321",
       "role": "user"
+    },
+    {
+      "id": "3",
+      "username": "usuario",
+      "email": "user@example2.com",
+      "password": "123",
+      "role": "user"
     }
   ],
   "reviews": [
     
   ],
-  "purchases": [],
+  "purchases": [
+    {
+      "id": 1,
+      "userId": "3",
+      "products": [
+        {
+          "id": "4",
+          "name": "Monitor 4K UltraWide",
+          "description": "Monitor de 34 pulgadas con resolución 4K y soporte para HDR10.",
+          "price": "799.00",
+          "imageURL": "https://images.philips.com/is/image/philipsconsumer/f49db609e97544ee906ab014013253d9?$pnglarge$&wid=1250",
+          "categoryId": "3",
+          "subcategoryId": "13",
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 799
+    }
+  ],
   "categories": [
     {
       "id": "1",
@@ -181,15 +206,6 @@
   ],
   "products": [
     {
-      "id": "1",
-      "name": "Laptop Ultraliviana XYZ",
-      "description": "Laptop ideal para trabajo remoto con batería de larga duración y pantalla de alta definición.",
-      "price": "1200.99",
-      "imageURL": "data:image/jpeg;base64,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",
-      "categoryId": "3",
-      "subcategoryId": "15"
-    },
-    {
       "id": "2",
       "name": "Auriculares Inalámbricos ABC",
       "description": "Auriculares con cancelación de ruido activa y sonido envolvente.",
@@ -224,6 +240,15 @@
       "imageURL": "https://m.media-amazon.com/images/I/618zZ7u3sUL._AC_SL1500_.jpg",
       "categoryId": "3",
       "subcategoryId": "15"
+    },
+    {
+      "id": "5",
+      "name": "hbhbhasd",
+      "description": "asdgasdgshdhjhbjsdbhasd",
+      "price": "12",
+      "imageURL": "sdsdsdsdsdds",
+      "categoryId": "1",
+      "subcategoryId": "1"
     }
   ]
 }

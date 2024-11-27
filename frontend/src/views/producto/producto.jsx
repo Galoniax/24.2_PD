@@ -316,8 +316,7 @@ export function Product() {
           </div>
         </div>
 
-
-        <div className="mt-10">
+        <div className="mt-10 mb-16 max-h-[450px] overflow-y-auto">
           {reviews &&
           reviews.filter((review) => review.productId == product.id).length >
             0 ? (
@@ -332,12 +331,22 @@ export function Product() {
                     <h2 className="textRedHatDisplayRegular text-[16px] font-bold text-[#5a5a5a]">
                       {review.title}
                     </h2>
-                    {review.userId == user.id && (
+
+                    {user.role == "admin" ? (
                       <FontAwesomeIcon
                         icon={faTrash}
                         className="text-[#414141]"
                         onClick={() => handleDeleteReview(review)}
                       />
+                    ) : (
+                      user.role == "user" &&
+                      review.userId == user.id && (
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          className="text-[#414141]"
+                          onClick={() => handleDeleteReview(review)}
+                        />
+                      )
                     )}
                   </div>
                   <p className="text-sm mt-1 text-gray-600">{review.comment}</p>

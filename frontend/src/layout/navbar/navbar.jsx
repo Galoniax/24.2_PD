@@ -73,8 +73,8 @@ export function Navbar() {
           />
           <Link
             to="/"
-            className={`title-text textGabarito text-[22px] transition-all duration-300 
-              ${scrolled ? "text-[#131313]" : "text-[#f0f0f0]"}
+            className={`title-text  textNunitoSansBold tracking-tighter text-[21px] transition-all duration-300 
+              ${scrolled ? "text-[#333333]" : "text-[#f0f0f0]"}
               ${location.pathname === "/catalogo" ? "text-[#f0f0f0]" : ""}
               `}
           >

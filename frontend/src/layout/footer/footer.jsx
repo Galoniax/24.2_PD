@@ -83,7 +83,7 @@ export function Footer() {
       </div>
       <div className="flex justify-end pt-4 px-5 mt-7 border-t-[1px] border-[#535353]">
         <p className="textRedHatDisplayRegular text-[#838387] text-[12px] hover:text-[#eeeeee]">
-          © 2024 SoundWave. Todos los derechos reservados.
+          © {new Date().getFullYear()} SoundWave. Todos los derechos reservados.
         </p>
       </div>
     </footer>

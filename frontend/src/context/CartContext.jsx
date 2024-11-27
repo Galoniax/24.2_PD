@@ -42,7 +42,7 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((product) => product.id !== productId));
-    toast.success("Producto eliminado del carrito")
+    toast.success("Producto eliminado del carrito", { autoClose: 1200 });
   };
 
   const toggleSidebar = () => {
