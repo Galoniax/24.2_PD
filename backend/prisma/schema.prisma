@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Definir el proveedor de la base de datos
+datasource db {
+  provider = "postgresql" // Usa el proveedor de base de datos adecuado, como "postgresql", "mysql", etc.
+  url      = env("DATABASE_URL") // URL de la base de datos
+}
+
+// Generación del cliente de Prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Modelo de usuarios
+model User {
+  id       String   @id @default(cuid())
+  username String
+  email    String   @unique
+  password String
+  role     UserRole  
+
+  purchases Purchase[]
+  reviews         Review[]
+}
+
+// Modelo de categorías
+model Category {
+  id            Int        @id @default(autoincrement())
+  name          String
+  subcategories Subcategory[]
+
+  products      Product[]
+}
+
+// Modelo de subcategorías
+model Subcategory {
+  id        Int   @id @default(autoincrement())
+  name      String
+  category  Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  products  Product[]
+}
+
+// Modelo de productos
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  imageURL    String
+  stock       Int         @default(0)
+  status      ProductStatus 
+  
+
+  category    Category    @relation(fields: [categoryId], references: [id])
+  subcategory Subcategory @relation(fields: [subcategoryId], references: [id])
+
+  categoryId   Int
+  subcategoryId Int
+
+  purchaseProducts PurchaseProduct[] 
+  reviews Review[]
+}
+
+// Modelo de compras
+model Purchase {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  totalPrice  Float
+  products    PurchaseProduct[]
+
+  createdAt   DateTime   @default(now())
+}
+
+// Modelo de productos en una compra (relación muchos a muchos entre productos y compras)
+model PurchaseProduct {
+  id          String   @id @default(cuid())
+  purchaseId  String
+  productId   String
+  quantity    Int
+
+  purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        String  @id @default(cuid())
+  userId    String
+  productId String
+  rating    Int    
+  title     String
+  comment   String
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  
+}
+
+enum UserRole {
+  admin
+  user
+}
+
+// Enum para el estado de los productos
+enum ProductStatus {
+  disponible
+  agotado
+}
+
+
