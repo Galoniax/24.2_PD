@@ -1,0 +1,6 @@
+### GET /products
+
+GET http://localhost:5000/api/v1/products/
+
+### DELETE /products
+DELETE http://localhost:5000/api/v1/products/delete/eef71ed3-e70f-44d3-86fa-8fd17faf11ea
