@@ -1,77 +1,104 @@
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { login, register } from "../services/authService";
+import { ROUTES } from "../constants/constants";
 import { toast } from "react-toastify";
 
-import { loginAsync, registerAsync,  } from "../services/authService";
+import { jwtDecode } from "jwt-decode";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") ? true : false
-  );
-  const [user, setUser] = useState(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
-      : null
-  );
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState([]);
   const navigate = useNavigate();
 
-  const login = async (email, password) => {
+ 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUser(decodedToken);
+      
+      if (decodedToken.exp < Date.now() / 1000) {
+        logout();
+      }
+    }
+  }, []);
+
+  const authenticate = async (email, password) => {
     try {
-      const foundUser = await loginAsync(email, password);
+      const response = await login(email, password);
+      const token = response.token;
 
-      setIsLoggedIn(true);
-      setUser({
-        id: foundUser.id,
-        username: foundUser.username,
-        email: foundUser.email,
-        role: foundUser.role,
-      });
+      if (!token) {
+        throw new Error("Token no proporcionado en la respuesta del servidor");
+      }
 
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("user", JSON.stringify(foundUser));
+      const decodedToken = jwtDecode(token);
 
-      toast.success("Has iniciado sesión");
+      localStorage.setItem("token", token);
 
-      navigate("/");
+      setUser(decodedToken);
 
-      return true;
+      if (decodedToken.role) {
+        navigate(ROUTES.HOME);
+      }
+
+      return response;
     } catch (error) {
-      console.error("Error al iniciar sesión:", error.message);
+      console.error("Error en login:", error.message);
+
+      // Mostrar un toast con el mensaje de error
       toast.error(error.message || "Error al iniciar sesión");
-      return false;
+
+      throw error;
+    }
+  };
+
+  const registerUser = async (username, email, password) => {
+    try {
+      const response = await register(username, email, password);
+
+      navigate(ROUTES.LOGIN);
+
+      return response;
+    } catch (error) {
+      console.error("Error en registro:", error.message);
+
+      // Mostrar un toast con el mensaje de error
+      toast.error(error.message || "Error en el registro");
+
+      throw error;
     }
   };
 
   const logout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
 
-    setIsLoggedIn(false);
     setUser(null);
-
     toast.success("Has cerrado sesión");
-    navigate("/login");
-  };
-
-  const register = async (username, email, password) => {
-    try {
-      const newUser = await registerAsync(username, email, password);
-      toast.success("Registro exitoso");
-      return newUser;
-    } catch (error) {
-      console.error("Error al registrar usuario:", error.message);
-      toast.error(error.message || "Error al registrar usuario");
-      return null;
-    }
+    navigate(ROUTES.LOGIN);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, login, logout, register }}>
+    <AuthContext.Provider
+      value={{
+        authenticate,
+        registerUser,
+        user,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};

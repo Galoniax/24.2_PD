@@ -1,10 +1,19 @@
 import { axiosInterceptor } from "../interceptor/axios-interceptor";
+import { toast } from "react-toastify";
 
-export const fetchAllReviews = async () => {
+export const fetchReviews = async () => {
     try {
-        const response = await axiosInterceptor.get("/reviews");
+        const response = await axiosInterceptor.get("/api/v1/reviews/");
+
+        if (response.status === 404) {
+            throw new Error("No se encontraron reviews");
+        }
+
         return response.data;
     } catch (error) {
+        if (error.response.status === 500 && error.response) {
+            toast.error(error.response.data.message || "Error interno del servidor");
+        }
         console.error("Error al obtener reviews", error);
         throw error;
     }
@@ -22,25 +31,19 @@ export const fetchReviewById = async (id) => {
 
 export const createReview = async (review) => {
     try {
-        // Obtener la última reseña para calcular el próximo id (solo si no puedes evitarlo)
-        const reviewResponse = await axiosInterceptor.get("/reviews");
-        
-        // Obtener los datos de la reseña e id
-        const reviews = reviewResponse.data;
-        const id = String(reviews.length + 1);
-       
-        // Asignar el id al review
-        review.id = id;
+        const response = await axiosInterceptor.post("/api/v1/reviews/create", review);
 
-        // Hacer la solicitud para crear la nueva reseña
-        const response = await axiosInterceptor.post("/reviews", review);
+        if (response.status === 201) {
+            toast.success("Resena creada con exito");
+        }
 
-        // Devolver los datos de la respuesta
         return response.data;
     } catch (error) {
         console.error("Error al crear review", error);
-        // Podrías lanzar un error más específico o un mensaje de usuario
-        throw new Error("No se pudo crear la reseña. Intenta nuevamente.");
+        
+        const errorMessage = error.response?.data?.message || "Error interno del servidor";
+        toast.error(errorMessage);
+        throw error;
     }
 };
 
@@ -54,12 +57,20 @@ export const updateReview = async (id, review) => {
     }
 };  
 
-export const deleteReview = async (id) => {
+export const deleteReview = async (review) => {
     try {
-        const response = await axiosInterceptor.delete(`/reviews/${id}`);
+        const response = await axiosInterceptor.delete(`/api/v1/reviews/delete/${review.id}`);
+
+        if (response.status === 200) {
+            toast.success("Resena eliminada con exito");
+        }
+
         return response.data;
     } catch (error) {
         console.error("Error al eliminar review", error);
+
+        const errorMessage = error.response?.data?.message || "Error interno del servidor";
+        toast.error(errorMessage);
         throw error;
     }
 };

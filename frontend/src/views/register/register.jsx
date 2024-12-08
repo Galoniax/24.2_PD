@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import RandomTrackPlayer  from "../../components/spotify/PlaylistPlayer";
 
 import "./register.css";
 
@@ -10,7 +9,9 @@ export function Register() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const { register } = useAuth();
+  const isFormValid = email && password && username;
+
+  const { registerUser } = useAuth();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -27,10 +28,13 @@ export function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!email || !password || !username) {
-      return;
+    if (isFormValid) {
+      try {
+        await registerUser(username, email, password);
+      } catch (error) {
+        console.error("Error al registrar:", error.message);
+      }
     }
-    await register(username, email, password); // Llama a register de forma asíncrona
   };
 
   return (

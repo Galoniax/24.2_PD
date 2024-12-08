@@ -1,35 +1,33 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useProducts } from "../../hooks/useProducts";
+
+
+import { updateProduct, deleteProduct } from "../../services/productService";
+
 import { useAuth } from "../../hooks/useAuth";
 import { CartContext } from "../../context/CartContext";
 import ProductModal from "../../components/dialogs/ProductModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
+
 
 const ProductList = ({ products, onChange, reviews, categories }) => {
   const navigate = useNavigate();
-  const { deleteProduct, updateProduct } = useProducts();
+
   const { user } = useAuth();
   const { addToCart } = useContext(CartContext);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
 
-
   const handleEdit = (product) => {
     setSelectedProduct(product);
     setIsEdit(true);
-
   };
-
- 
 
   const handleDelete = (product) => {
     setSelectedProduct(product);
     setIsEdit(false);
-
   };
 
   const handleCloseDialog = () => {
@@ -39,36 +37,26 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
 
   const handleSaveChanges = async (product) => {
     try {
-      const response = await updateProduct(product);
-      if (response) {
-        toast.success("Producto actualizado con éxito");
-        onChange(); 
-      } else {
-        throw new Error("La actualización del producto falló.");
-      }
+      await updateProduct(product);
+      const updatedProducts = products.map((p) => (p.id === product.id ? product : p));
+      onChange(updatedProducts);
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
-      toast.error("No se pudo actualizar el producto. Inténtalo de nuevo.");
     } finally {
-      handleCloseDialog(); 
+      handleCloseDialog();
     }
   };
 
 
   const handleDeleteProduct = async (product) => {
     try {
-      const response = await deleteProduct(product);
-      if (response) {
-        toast.success("Producto eliminado con éxito");
-        onChange();
-      } else {
-        throw new Error("La eliminación del producto falló.");
-      }
+      await deleteProduct(product);
+      const updatedProducts = products.filter((p) => p.id !== product.id);
+      onChange(updatedProducts);
     } catch (error) {
       console.error("Error al eliminar el producto:", error);
-      toast.error("No se pudo eliminar el producto. Inténtalo de nuevo.");
     } finally {
-      handleCloseDialog(); 
+      handleCloseDialog();
     }
   };
 
@@ -103,64 +91,78 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-[20px] gap-y-[40px] mt-4">
-      {products.map((product) => (
-        <div
-          key={product.id}
-          className="border rounded-lg p-4 shadow-md flex flex-col justify-between cursor-pointer hover:shadow-lg transition-shadow duration-300"
-        >
-          <div onClick={() => handleProductClick(product, reviews)}>
-            <img
-              src={product.imageURL}
-              alt={product.name}
-              className="w-full h-48 object-cover rounded-md mb-2"
-            />
-            <h3 className="textNunitoSans text-[15px] text-[#525252] font-semibold tracking-[-0.5px]">
-              {product.name}
-            </h3>
+      {products
+        /** .filter(product => product.stock > 0)*/
+        .map((product) => (
+          <div
+            key={product.id}
+            className="border rounded-lg p-4 shadow-md flex flex-col justify-between cursor-pointer hover:shadow-lg transition-shadow duration-300"
+          >
+            <div onClick={() => handleProductClick(product, reviews)}>
+              <img
+                src={product.imageURL}
+                alt={product.name}
+                className="w-full h-48 object-cover rounded-md mb-2"
+              />
+              <h3 className="textNunitoSans text-[15px] text-[#525252] font-semibold tracking-[-0.5px]">
+                {product.name}
+              </h3>
 
-            <div className="flex justify-between mt-2">
-              <p className="text-[#3eb497] text-[16px] font-semibold tracking-[-0.5px]">
-                ${product.price}
-              </p>
-
-              <div className="flex items-center">
-                <p className="text-[#ceced4] font-semibold text-[14px] tracking-[-1px]">
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    style={{ color: "#ffa844", fontSize: "12px" }}
-                  />{" "}
-                  {calculateAverageRating(product.id, reviews).averageRating} |{" "}
-                  {calculateAverageRating(product.id, reviews).reviewCount}
+              <div className="flex justify-between mt-2">
+                <p className="text-[#3eb497] text-[16px] font-semibold tracking-[-0.5px]">
+                  ${product.price}
                 </p>
+
+                <div className="flex items-center">
+                  <p className="text-[#7e7e7e] font-semibold text-[14px] tracking-[-1px]">
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={{ color: "#ffa844", fontSize: "12px" }}
+                    />{" "}
+                    {calculateAverageRating(product.id, reviews).averageRating}{" "}
+                    | {calculateAverageRating(product.id, reviews).reviewCount}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {user && user.role == "admin" ? (
-            <div className="mt-5 flex space-x-2 justify-center">
-              <button
-                onClick={() => handleEdit(product)}
-                className="bg-[#2785aa] hover:bg-[#256179] text-[14.5px] w-full text-white font-semibold py-1 px-2 rounded"
-              >
-                Editar libro
-              </button>
-              <button
-                onClick={() => handleDelete(product)}
-                className="bg-red-500 hover:bg-red-600 text-white text-[14.5px] w-full font-semibold py-1 px-2 rounded"
-              >
-                Eliminar
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => addToCart(product)}
-              className="bg-[#383838] hover:bg-[#6d6d6d] w-full text-[14.5px] text-white font-semibold py-2 mt-4 px-4 rounded"
-            >
-              Agregar al carrito
-            </button>
-          )}
-        </div>
-      ))}
+            
+             
+               
+              {user && user.role == "admin" ? (
+                <div className="mt-5 flex space-x-2 justify-center">
+                  <button
+                    onClick={() => handleEdit(product)}
+                    className="bg-[#2785aa] hover:bg-[#256179] text-[14.5px] w-full text-white font-semibold py-2 px-2 rounded"
+                  >
+                    Editar libro
+                  </button>
+                  <button
+                    onClick={() => handleDelete(product)}
+                    className="bg-red-500 hover:bg-red-600 text-white text-[14.5px] w-full font-semibold py-2 px-2 rounded"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              ) : product.stock > 0 ? (
+                <button
+                  onClick={() => addToCart(product)}
+                  className="bg-[#383838] hover:bg-[#6d6d6d] w-full text-[14.5px] text-white font-semibold py-2 mt-4 px-4 rounded"
+                >
+                  Agregar al carrito
+                </button>
+              ) : null}
+
+              {product.stock <= 0 && (
+                <button
+                  className="bg-[#ce3d3d] hover:bg-[#6d6d6d] w-full text-[14.5px] text-white font-semibold py-2 mt-4 px-4 rounded"
+                >
+                  Agotado
+                </button>
+              )}
+            
+          </div>
+        ))}
 
       {selectedProduct && (
         <ProductModal

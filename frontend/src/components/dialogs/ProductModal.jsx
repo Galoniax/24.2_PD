@@ -17,6 +17,7 @@ const ProductModal = ({
     isCreate ? "" : product?.description || ""
   );
   const [price, setPrice] = useState(isCreate ? "" : product?.price || "");
+  const [stock, setStock] = useState(isCreate ? "" : product?.stock || "");
   const [imageURL, setImageURL] = useState(
     isCreate ? "" : product?.imageURL || ""
   );
@@ -47,16 +48,29 @@ const ProductModal = ({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              const newProduct = {
-                id: isCreate ? null : product?.id,
-                name,
-                description,
-                price,
-                imageURL,
-                categoryId,
-                subcategoryId,
-              };
-            
+              const newProduct = isCreate
+                ? {
+                    name,
+                    description,
+                    price,
+                    stock,
+                    status: stock === 0 ? "agotado" : "disponible",
+                    imageURL,
+                    categoryId,
+                    subcategoryId,
+                  }
+                : {
+                    id: product?.id,
+                    name,
+                    description,
+                    price,
+                    stock,
+                    status: stock === 0 ? "agotado" : "disponible",
+                    imageURL,
+                    categoryId,
+                    subcategoryId,
+                  };
+
               isCreate ? onCreate(newProduct) : onSave(newProduct);
               onClose();
             }}
@@ -92,10 +106,26 @@ const ProductModal = ({
                 min={1}
                 onChange={(e) => {
                   const inputValue = e.target.value;
-                  const validInput = inputValue.replace(/[^0-9.]/g, ""); 
-                  setPrice(validInput); 
+                  const validInput = inputValue.replace(/[^0-9.]/g, "");
+                  setPrice(validInput);
                 }}
                 value={price}
+                className="border p-2 rounded w-full text-[14px] text-[#272727]"
+              />
+            </label>
+
+            <label className="textRedHatDisplayMedium text-[14px] block mb-2 mt-6 text-white">
+              Stock:
+              <input
+                type="text"
+                required
+                min={0}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  const validInput = inputValue.replace(/[^0-9.]/g, "");
+                  setStock(validInput);
+                }}
+                value={stock}
                 className="border p-2 rounded w-full text-[14px] text-[#272727]"
               />
             </label>
@@ -120,7 +150,6 @@ const ProductModal = ({
                 className="border p-2 rounded w-full text-[14px] text-[#272727]"
               >
                 {/**Obtener todas las categorias */}
-                {console.log(categoryId)}
                 <option value="">Selecciona una categoría</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>

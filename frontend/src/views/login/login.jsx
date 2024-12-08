@@ -5,30 +5,32 @@ import "./login.css";
 
 
 export function Login() {
+  const { authenticate } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const { login } = useAuth();
 
-  useEffect(() => {
-    // Verificar si hay datos almacenados de un usuario previamente autenticado
-    const storedEmail = localStorage.getItem("email");
-    const storedPassword = localStorage.getItem("password");
+  const isFormValid = email && password;
 
-    if (storedEmail && storedPassword) {
-      setEmail(storedEmail);
-      setPassword(storedPassword);
-      setRememberMe(true);
-    }
-  }, []);
+  
 
-  const handleRememberMeChange = (event) => {
-    setRememberMe(event.target.checked);
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
   };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await login(email, password);
+    if (isFormValid) {
+      try {
+        await authenticate(email, password);
+      } catch (error) {
+        console.error("Error en login:", error.message);
+      }
+    }
   };
 
   return (
@@ -55,7 +57,7 @@ export function Login() {
                   required
                   minLength="4"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
                 />
                 <label className="textGabaritoRegular">Email</label>
               </div>
@@ -66,7 +68,7 @@ export function Login() {
                   type="password"
                   name="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   required
                   minLength="3"
                 />

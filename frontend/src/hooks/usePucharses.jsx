@@ -1,5 +1,5 @@
-import { createPurchase, fetchAllPurchases } from "../services/pucharseService";
+import { createPurchase } from "../services/pucharseService";
 
 export const usePucharses = () => {
-    return { createPurchase, fetchAllPurchases };
+    return { createPurchase };
 };

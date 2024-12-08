@@ -45,12 +45,22 @@ export const CartProvider = ({ children }) => {
     toast.success("Producto eliminado del carrito", { autoClose: 1200 });
   };
 
+  const updateQuantity = (itemId, newQuantity) => {
+    setCart(currentCart => 
+      currentCart.map(item => 
+        item.id === itemId 
+          ? { ...item, quantity: newQuantity } 
+          : item
+      )
+    );
+  };
+
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, isSidebarOpen, toggleSidebar, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, isSidebarOpen, toggleSidebar, clearCart }}>
       {children}
     </CartContext.Provider>
   );

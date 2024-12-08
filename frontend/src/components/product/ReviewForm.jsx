@@ -1,31 +1,22 @@
 // src/components/Review/ReviewForm.jsx
 import React, { useState } from 'react';
-import { useReviews } from '../../hooks/useReviews';
+import { createReview } from '../../services/reviewService';
 
-const ReviewForm = ({ productId, user, onChange }) => {
+const ReviewForm = ({ productId, user, onChange, fetchData }) => {
   const [title, setTitle] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(5); 
-
-  const { createReview } = useReviews();
   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     const newReview = {
-      userId: parseInt(user.id),
-      productId: parseInt(productId),
+      userId: user.id,
+      productId: productId,
       title,
       comment,
-      rating,
-      date: new Date().toLocaleString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      })
+      rating
     };
 
     try {

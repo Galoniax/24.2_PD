@@ -1,13 +1,17 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import Filter from "../../components/filter/Filter";
 import ProductList from "../../components/product/ProductList";
+
 import { useProducts } from "../../hooks/useProducts";
 import { useReviews } from "../../hooks/useReviews";
 import { useCategory } from "../../hooks/useCategory";
+
 import Loader from "../../components/animation/Loader";
+
+import { createProduct } from "../../services/productService";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -16,31 +20,33 @@ import ProductModal from "../../components/dialogs/ProductModal";
 
 export function Catalogo() {
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [categories, setCategories] = useState([]);
+
   const [productLimit, setProductLimit] = useState(10);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [isCreate, setIsCreate] = useState(false);
 
   const navigate = useNavigate();
 
-  const { isLoggedIn, user } = useAuth();
-  const { fetchProducts, createProduct } = useProducts();
-  const { fetchAllReviews } = useReviews();
-  const { fetchAllCategories } = useCategory();
+  const { user } = useAuth();
+
+
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [reviews, setReviews] = useState([]);
+
+
+  const { categoriesData } = useCategory();
+  const { productsData } = useProducts();
+  const { reviewsData } = useReviews();
 
   const fetchData = async () => {
     try {
-      const productsData = await fetchProducts();
-      const reviewsData = await fetchAllReviews();
-      const categoriesData = await fetchAllCategories();
-
-      setReviews(reviewsData);
-      setProducts(productsData);
       setCategories(categoriesData);
+      setProducts(productsData);
       setFilteredProducts(productsData);
+      setReviews(reviewsData);
+
     } catch (error) {
       console.error("Error al obtener productos:", error);
     } finally {
@@ -49,13 +55,13 @@ export function Catalogo() {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (user === null) {
       navigate("/login");
       toast.error("Debes iniciar sesion");
     } else {
       fetchData();
     }
-  }, [isLoggedIn]);
+  }, [user, categoriesData, productsData, reviewsData]);
 
   const handleCreate = () => {
     setIsCreate(true);
@@ -63,23 +69,25 @@ export function Catalogo() {
 
   const handleCreateProduct = async (product) => {
     try {
-      const response = await createProduct(product); // Crea el producto en la base de datos
+      const response = await createProduct(product); 
       if (response) {
-        setProducts((prevProducts) => [response, ...prevProducts]); // Agrega el nuevo producto a la lista principal
+        setProducts((prevProducts) => [response, ...prevProducts]); 
         setFilteredProducts((prevFilteredProducts) => [
           ...prevFilteredProducts,
           response,
-        ]); // Agrega el nuevo producto a la lista filtrada
-        toast.success("Producto creado con éxito"); // Muestra un mensaje de éxito
-      } else {
-        toast.error("No se pudo crear el producto");
-      }
+        ]); 
+      } 
     } catch (error) {
       console.error("Error al crear producto:", error);
-      toast.error("Error al crear producto");
     } finally {
       handleCloseDialog();
     }
+  };
+
+  const handleFetchData = async (updatedProducts) => {
+    setProducts(updatedProducts);
+    setFilteredProducts(updatedProducts);
+    setLoading(false);
   };
 
   const handleCloseDialog = () => {
@@ -93,60 +101,56 @@ export function Catalogo() {
     searchTerm,
     priceTerm
   ) => {
-    setLoading(true);
+    let filtered = [...products];
 
-    setTimeout(() => {
-      let filtered = products;
+    if (categoryId) {
+      filtered = filtered.filter((product) => product.categoryId == categoryId);
+    }
 
-      if (categoryId) {
-        filtered = filtered.filter(
-          (product) => product.categoryId == categoryId
-        );
-      }
+    if (subcategoryId) {
+      filtered = filtered.filter(
+        (product) => product.subcategoryId == subcategoryId
+      );
+    }
 
-      if (subcategoryId) {
-        filtered = filtered.filter(
-          (product) => product.subcategoryId == subcategoryId
-        );
-      }
+    if (searchTerm) {
+      const normalizedSearchTerm = searchTerm
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
 
-      if (searchTerm) {
-        const normalizedSearchTerm = searchTerm
+      filtered = filtered.filter((product) =>
+        product.name
           .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "");
-        filtered = filtered.filter((product) =>
-          product.name
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase()
-            .includes(normalizedSearchTerm.toLowerCase())
-        );
-      }
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .includes(normalizedSearchTerm.toLowerCase())
+      );
+    }
 
-      if (priceTerm) {
-        filtered = filtered.filter(
-          (product) => Number(product.price) <= Number(priceTerm)
-        );
-      }
+    if (priceTerm) {
+      filtered = filtered.filter(
+        (product) => Number(product.price) <= Number(priceTerm)
+      );
+    }
 
-      setFilteredProducts(filtered);
-      setLoading(false);
-    }, 650);
+    setFilteredProducts(filtered);
+    setLoading(false);
   };
 
   const getProductCount = () => products.length;
 
-  const handleLimitChange = (event) => {
-    const limit = Number(event.target.value);
-    setProductLimit(limit);
+  const handleLimitChange = useCallback(
+    (event) => {
+      const limit = Number(event.target.value);
+      setProductLimit(limit);
 
-    // Aplicar el límite sobre la lista filtrada
-    setFilteredProducts((prevFilteredProducts) =>
-      prevFilteredProducts.slice(0, limit)
-    );
-  };
+      // Aplicar el límite sobre la lista filtrada
+      setFilteredProducts(products.slice(0, limit));
+    },
+    [products]
+  );
 
-  return isLoggedIn ? (
+  return user ? (
     <div className="bg-[#f5f5f5] min-h-[115vh]">
       <div className="catalogo pt-[140px] w-full flex justify-center p-[50px]">
         <div className="catalogo__content w-[25%]">
@@ -154,7 +158,9 @@ export function Catalogo() {
             onFilterChange={handleFilterChange}
             products={products}
             categories={categories}
+            setCategories={setCategories}
           />
+          
         </div>
         <div className="catalogo__product w-[75%]">
           <div className="flex justify-between mb-10">
@@ -189,9 +195,9 @@ export function Catalogo() {
                 value={productLimit}
                 onChange={handleLimitChange}
               >
-                <option value="5">5 productos</option>
-                <option value="10">10 productos</option>
-                <option value="20">20 productos</option>
+                <option value={5}>5 productos</option>
+                <option value={10}>10 productos</option>
+                <option value={20}>20 productos</option>
               </select>
 
               {user.role == "admin" && (
@@ -216,7 +222,7 @@ export function Catalogo() {
           ) : (
             <ProductList
               products={filteredProducts}
-              onChange={fetchData}
+              onChange={handleFetchData}
               reviews={reviews}
               categories={categories}
             />

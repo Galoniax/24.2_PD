@@ -1,8 +1,24 @@
 import { fetchAllCategories } from "../services/categoryService";
+import { useState, useEffect } from "react";
 
 
 export const useCategory = () => {
-    return {
-        fetchAllCategories
+    const [categoriesData, setCategories] = useState([]);
+
+    const fetchCategories = async () => {
+        try {
+            const categoriesData = await fetchAllCategories();
+            setCategories(categoriesData);
+        } catch (error) {
+            console.error("Error al obtener categorias", error);
+        }
     };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    return { categoriesData };
+
+    
 };

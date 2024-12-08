@@ -1,10 +1,17 @@
 import { useEffect, useState, useContext } from "react";
-import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
-import { useProducts } from "../../hooks/useProducts";
+import { useParams, useNavigate, Link } from "react-router-dom";
+
+import { fetchProductById } from "../../services/productService";
+
 import { useCategory } from "../../hooks/useCategory";
 import { useReviews } from "../../hooks/useReviews";
+import { useProducts } from "../../hooks/useProducts";
+
+import { createPurchase } from "../../services/pucharseService";
+import { deleteReview, updateReview } from "../../services/reviewService";
+
 import { CartContext } from "../../context/CartContext";
-import { usePucharses } from "../../hooks/usePucharses";
+
 import { useAuth } from "../../hooks/useAuth";
 import ReviewForm from "../../components/product/ReviewForm";
 
@@ -18,10 +25,12 @@ export function Product() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { user, isLoggedIn } = useAuth();
-  const { createPurchase } = usePucharses();
+  const { user } = useAuth();
+
   const [productCategory, setProductCategory] = useState(null);
+
   const [product, setProduct] = useState(null);
+
   const [reviews, setReviews] = useState([]);
 
   const [averageRating, setAverageRating] = useState(null);
@@ -30,9 +39,9 @@ export function Product() {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const { addToCart } = useContext(CartContext);
 
-  const { fetchProductById, fetchProducts } = useProducts();
-  const { fetchAllCategories } = useCategory();
-  const { fetchAllReviews, deleteReview } = useReviews();
+  const { categoriesData } = useCategory();
+  const { productsData } = useProducts();
+  const { reviewsData } = useReviews();
 
   const calculateAverageRating = (productId, reviews) => {
     const productReviews = reviews.filter(
@@ -51,20 +60,28 @@ export function Product() {
     };
   };
 
+  const handleNewReview = (newReview) => {
+    setReviews([...reviews, newReview]);
+
+    const { averageRating, reviewCount } = calculateAverageRating(
+      product.id,
+      [...reviews, newReview]
+    );
+    setAverageRating(averageRating);
+    setReviewCount(reviewCount);
+  };
+
   const fetchData = async () => {
     try {
-      const productData = await fetchProductById(id);
-      const categoryData = await fetchAllCategories();
-      const allProducts = await fetchProducts();
-      const reviewsData = await fetchAllReviews();
+      const productDetails = await fetchProductById(id);
 
-      setProduct(productData);
-      setProductCategory(categoryData);
+      setProduct(productDetails);
+      setProductCategory(categoriesData);
       setReviews(reviewsData);
 
-      if (productData) {
+      if (productDetails) {
         const { averageRating, reviewCount } = calculateAverageRating(
-          productData.id,
+          productDetails.id,
           reviewsData
         );
         setAverageRating(averageRating);
@@ -72,24 +89,17 @@ export function Product() {
       }
 
       // Filtrar y seleccionar productos relacionados
-      const filteredProducts = allProducts.filter(
-        (p) => p.categoryId == productData.categoryId && p.id != productData.id
+      const filteredProducts = productsData.filter(
+        (p) =>
+          p.categoryId == productDetails.categoryId && p.id != productDetails.id
       );
-      const shuffledProducts = filteredProducts.sort(() => 0.5 - Math.random());
 
-      // Si hay menos de 10 productos relacionados, usa todos los productos
-      if (shuffledProducts.length < 10) {
-        setRelatedProducts(
-          allProducts
-            .filter((p) => p.categoryId != productData.categoryId)
-            .sort(() => 0.5 - Math.random())
-        );
-        return;
-      }
+      const shuffledProducts = filteredProducts.sort(() => Math.random() - 0.5);
 
       setRelatedProducts(shuffledProducts.slice(0, 10)); // Máximo 10 productos
     } catch (error) {
       console.error("Error al obtener productos:", error);
+      toast.error("Error al obtener productos");
     } finally {
       const relatedProductsContainer =
         document.getElementById("relatedProducts");
@@ -103,13 +113,13 @@ export function Product() {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (user === null) {
       navigate("/login");
       toast.error("Debes iniciar sesion");
     } else {
       fetchData();
     }
-  }, [id, fetchProductById, isLoggedIn]);
+  }, [id, user, categoriesData, productsData, reviewsData]);
 
   const handleProductClick = (product) => {
     navigate(`/producto/${product.id}`, {});
@@ -118,22 +128,27 @@ export function Product() {
   const handlePurchase = async (product) => {
     try {
       const purchase = await createPurchase(user.id, [], product);
-      toast.success("Compra realizada con éxito");
+
       console.log("Compra realizada:", purchase);
     } catch (error) {
-      toast.error("Error al realizar la compra");
       console.error("Error al realizar la compra:", error);
     }
   };
 
   const handleDeleteReview = async (review) => {
-    try {
-      await deleteReview(review.id);
-      toast.success("Reseña eliminada con éxito");
-      fetchData();
-    } catch (error) {
-      toast.error("Error al eliminar la reseña");
-      console.error("Error al eliminar la reseña:", error);
+    const confirmDelete = window.confirm("¿Estás seguro de que quieres eliminar esta reseña?");
+    
+    if (confirmDelete) {
+      try {
+        await deleteReview(review);
+        setReviews(prevReviews => 
+          prevReviews.filter(r => r.id != review.id)
+        );
+        
+      } catch (error) {
+        console.error("Error al eliminar la reseña:", error);
+
+      }
     }
   };
 
@@ -142,20 +157,31 @@ export function Product() {
       const category = productCategory.find(
         (category) => category.id == categoryId
       );
-      return `${category.name || ""}`;
+      return category ? `${category.name}` : "Categoría no encontrada";
     }
+    return "Categoría no encontrada";
   };
 
   const getProductSubcategoryName = (subcategoryId) => {
     if (productCategory) {
-      const subcategory = productCategory
-        .find((category) => category.id == product.categoryId)
-        .subcategories.find((subcategory) => subcategory.id == subcategoryId);
-      return `${subcategory.name || ""}`;
+      const category = productCategory.find(
+        (category) => category.id == product.categoryId
+      );
+      if (category) {
+        const subcategory = category.subcategories.find(
+          (subcategory) => subcategory.id == subcategoryId
+        );
+        return subcategory
+          ? `${subcategory.name}`
+          : "Subcategoría no encontrada";
+      } else {
+        return "Categoría no encontrada";
+      }
     }
+    return "Subcategoría no encontrada";
   };
 
-  return isLoggedIn ? (
+  return user ? (
     <div className="pt-[150px] w-full max-w-[1400px] m-auto">
       <div className="w-full flex gap-1 mb-10">
         <h1 className="textRedHatDisplayRegular text-[16px] tracking-[-1px] text-[#4d4d4d] cursor-pointer">
@@ -165,7 +191,7 @@ export function Product() {
           <Link to="/producto/${product.id}">Producto /</Link>
         </h1>
         <h1 className="textRedHatDisplayRegular text-[16px] tracking-[-1px] text-[#4d4d4d] cursor-pointer">
-          {getProductCategoryName(product?.categoryId)} /
+          {getProductCategoryName(product?.categoryId)}
         </h1>
         <h1 className="textRedHatDisplayRegular text-[16px] tracking-[-1px] text-[#4d4d4d] cursor-pointer">
           {getProductSubcategoryName(product?.subcategoryId)}
@@ -309,7 +335,7 @@ export function Product() {
           </h1>
           <div className="mt-5">
             <ReviewForm
-              onChange={fetchData}
+              onChange={handleNewReview}
               productId={product?.id}
               user={user}
             />
@@ -317,9 +343,7 @@ export function Product() {
         </div>
 
         <div className="mt-10 mb-16 max-h-[450px] overflow-y-auto">
-          {reviews &&
-          reviews.filter((review) => review.productId == product.id).length >
-            0 ? (
+          {reviews.length > 0 ? (
             reviews
               .filter((review) => review.productId == product.id)
               .map((review) => (
