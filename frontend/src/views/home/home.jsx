@@ -186,7 +186,7 @@ export function Home() {
             </div>
 
             <div className="flex items-stretch justify-center px-10">
-              {reviews.length == 0 ? (
+              {reviewsData.length == 0 ? (
                 <p className="text-[16px] text-[#F6F6F7] pt-[100px] font-semibold">
                   No hay reseñas disponibles.
                 </p>
