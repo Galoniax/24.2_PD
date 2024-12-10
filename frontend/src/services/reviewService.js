@@ -34,7 +34,7 @@ export const createReview = async (review) => {
         const response = await axiosInterceptor.post("/api/v1/reviews/create", review);
 
         if (response.status === 201) {
-            toast.success("Resena creada con exito");
+            toast.success(response.data.message || "Resena creada con exito");
         }
 
         return response.data;
@@ -62,7 +62,7 @@ export const deleteReview = async (review) => {
         const response = await axiosInterceptor.delete(`/api/v1/reviews/delete/${review.id}`);
 
         if (response.status === 200) {
-            toast.success("Resena eliminada con exito");
+            toast.success(response.data.message || "Reseña eliminada con exito");
         }
 
         return response.data;

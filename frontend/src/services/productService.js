@@ -45,7 +45,7 @@ export const createProduct = async (product) => {
     );
 
     if (response.status === 201) {
-      toast.success("Producto creado con exito");
+      toast.success(response.data.message || "Producto creado con exito");
     }
 
     return response.data;
@@ -77,9 +77,9 @@ export const updateProduct = async (product) => {
     );
 
     if (response.status === 404) {
-      toast.error("El producto no existe");
+      toast.error(response.data.message || "El producto no existe");
     } else if (response.status === 200) {
-      toast.success("Producto actualizado con exito");
+      toast.success(response.data.message || "Producto actualizado con exito");
     }
 
     return response.data;

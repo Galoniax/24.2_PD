@@ -1,7 +1,7 @@
 import { axiosInterceptor } from "../interceptor/axios-interceptor";
 import { toast } from "react-toastify";
 
-export const fetchAllCategories = async () => {
+export const fetchCategories = async () => {
   try {
     const response = await axiosInterceptor.get("/api/v1/categories/");
 
@@ -39,7 +39,7 @@ export const createCategory = async (name, subcategories) => {
     );
 
     if (response.status === 201) {
-      toast.success("Categoria creado con exito");
+      toast.success(response.data.message || "Categoria creada con exito");
     }
 
     return response.data;
@@ -67,7 +67,7 @@ export const deleteCategory = async (category) => {
     const response = await axiosInterceptor.delete(`/api/v1/categories/delete/${category.id}`);
 
     if (response.status === 200) {
-      toast.success("Categoria eliminada con exito");
+      toast.success(response.data.message || "Categoria eliminada con exito");
     }
 
     return response.data;
