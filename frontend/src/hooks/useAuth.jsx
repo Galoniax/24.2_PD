@@ -10,6 +10,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
  
@@ -19,10 +20,14 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       const decodedToken = jwtDecode(token);
       setUser(decodedToken);
+      setIsAuthenticated(true);
       
       if (decodedToken.exp < Date.now() / 1000) {
         logout();
       }
+    } else {
+      toast.error("Debes iniciar sesion");
+      navigate(ROUTES.LOGIN);
     }
   }, []);
 
@@ -47,11 +52,10 @@ export const AuthProvider = ({ children }) => {
 
       return response;
     } catch (error) {
+      if (error.response && (error.response.status === 500 || error.response.status === 401)) {
+        toast.error(error.response.data.message || "Error interno del servidor");
+      }
       console.error("Error en login:", error.message);
-
-      // Mostrar un toast con el mensaje de error
-      toast.error(error.message || "Error al iniciar sesión");
-
       throw error;
     }
   };
@@ -60,15 +64,14 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await register(username, email, password);
 
-      navigate(ROUTES.LOGIN);
-
+      if (response.status === 201) {
+        toast.success(response.data.message || "Registro exitoso");
+        navigate(ROUTES.LOGIN);
+      } 
+  
       return response;
     } catch (error) {
       console.error("Error en registro:", error.message);
-
-      // Mostrar un toast con el mensaje de error
-      toast.error(error.message || "Error en el registro");
-
       throw error;
     }
   };
@@ -79,6 +82,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     toast.success("Has cerrado sesión");
     navigate(ROUTES.LOGIN);
+    
   };
 
   return (
@@ -86,6 +90,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         authenticate,
         registerUser,
+        isAuthenticated,
         user,
         logout,
       }}
