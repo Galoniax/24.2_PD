@@ -3,7 +3,7 @@ import { PucharseController } from "../controllers/pucharseController.js";
 
 const pucharseRouter = Router();
 
-pucharseRouter.get("/", PucharseController.getAllPurchases);
+pucharseRouter.get("/:id", PucharseController.getAllById);
 pucharseRouter.post("/create", PucharseController.createPurchase);
 
 export { pucharseRouter };
