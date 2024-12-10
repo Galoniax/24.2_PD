@@ -80,6 +80,7 @@ const ProductModal = ({
               <input
                 type="text"
                 required
+                placeholder="Ingrese el nombre del producto"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
                 minLength={3}
@@ -91,6 +92,7 @@ const ProductModal = ({
               Descripción:
               <textarea
                 required
+                placeholder="Ingrese la descripción del producto"
                 minLength={10}
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
@@ -103,6 +105,7 @@ const ProductModal = ({
               <input
                 type="text"
                 required
+                placeholder="Ingrese el precio del producto"
                 min={1}
                 onChange={(e) => {
                   const inputValue = e.target.value;
@@ -119,6 +122,7 @@ const ProductModal = ({
               <input
                 type="text"
                 required
+                placeholder="Ingrese el stock del producto"
                 min={0}
                 onChange={(e) => {
                   const inputValue = e.target.value;
@@ -134,6 +138,7 @@ const ProductModal = ({
               URL´s Imagen:
               <input
                 type="text"
+                placeholder="Ingrese la URL de la imagen del producto"
                 onChange={(e) => setImageURL(e.target.value)}
                 value={imageURL}
                 required
@@ -147,7 +152,7 @@ const ProductModal = ({
                 onChange={(e) => setCategoryId(e.target.value)}
                 value={categoryId}
                 required
-                className="border p-2 rounded w-full text-[14px] text-[#272727]"
+                className="border p-2 rounded w-full text-[14px] text-[#9e9e9e]"
               >
                 {/**Obtener todas las categorias */}
                 <option value="">Selecciona una categoría</option>
@@ -165,7 +170,7 @@ const ProductModal = ({
                 onChange={(e) => setSubcategoryId(e.target.value)}
                 value={subcategoryId}
                 required
-                className="border p-2 rounded w-full text-[14px] text-[#272727]"
+                className="border p-2 rounded w-full text-[14px] text-[#9e9e9e]"
               >
                 <option value="">Selecciona una subcategoría</option>
                 {categories

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { createReview } from '../../services/reviewService';
 
-const ReviewForm = ({ productId, user, onChange, fetchData }) => {
+const ReviewForm = ({ productId, user, onChange }) => {
   const [title, setTitle] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(5); 
@@ -21,15 +21,20 @@ const ReviewForm = ({ productId, user, onChange, fetchData }) => {
 
     try {
         // Crear reseña en el servidor
-        await createReview(newReview);
+        const review = await createReview(newReview);
   
         // Limpiar los campos del formulario
         setTitle('');
         setComment('');
         setRating(5);
   
-        // Actualizar las reseñas en el componente padre
-        onChange(newReview);
+        // Actualizar el componente padre y consultar las reseñas
+        onChange(review);
+  
+        // Actualizar el promedio y la cantidad de reseñas
+      
+
+        
   
       } catch (error) {
         console.error("Error al enviar la reseña", error);

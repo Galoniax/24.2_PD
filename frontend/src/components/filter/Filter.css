@@ -16,7 +16,7 @@
   /* Personalización del thumb (Webkit-based) */
   .slidecontainer .slider::-webkit-slider-thumb {
     appearance: none;
-    background: #797979;
+    background: #535353;
     border: none;
     outline: none;
     height: 15px;

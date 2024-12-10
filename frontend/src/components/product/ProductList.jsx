@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 import { updateProduct, deleteProduct } from "../../services/productService";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -9,6 +8,8 @@ import { CartContext } from "../../context/CartContext";
 import ProductModal from "../../components/dialogs/ProductModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+
+import { ROUTES } from "../../constants/constants";
 
 
 const ProductList = ({ products, onChange, reviews, categories }) => {
@@ -78,7 +79,7 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
   };
 
   const handleProductClick = (product) => {
-    navigate(`/producto/${product.id}`);
+    navigate(ROUTES.PRODUCTO.replace(":id", product.id), {});
   };
 
   if (products.length == 0) {
@@ -130,16 +131,16 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
              
                
               {user && user.role == "admin" ? (
-                <div className="mt-5 flex space-x-2 justify-center">
+                <div className="mt-10 flex space-x-2 justify-center">
                   <button
                     onClick={() => handleEdit(product)}
-                    className="bg-[#2785aa] hover:bg-[#256179] text-[14.5px] w-full text-white font-semibold py-2 px-2 rounded"
+                    className="bg-[#2785aa] hover:bg-[#256179] text-[13px] w-full text-white font-semibold py-2 px-2 rounded"
                   >
                     Editar libro
                   </button>
                   <button
                     onClick={() => handleDelete(product)}
-                    className="bg-red-500 hover:bg-red-600 text-white text-[14.5px] w-full font-semibold py-2 px-2 rounded"
+                    className="bg-red-500 hover:bg-red-600 text-white text-[13px] w-full font-semibold py-2 px-2 rounded"
                   >
                     Eliminar
                   </button>
@@ -155,7 +156,7 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
 
               {product.stock <= 0 && (
                 <button
-                  className="bg-[#ce3d3d] hover:bg-[#6d6d6d] w-full text-[14.5px] text-white font-semibold py-2 mt-4 px-4 rounded"
+                  className="bg-[#ce3d3d] hover:bg-[#6d6d6d] w-full text-[13px] text-white font-semibold py-2 mt-4 px-4 rounded"
                 >
                   Agotado
                 </button>

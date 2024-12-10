@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import "./filter.css";
 import CategoryModal from "../dialogs/CategoryModal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faFolderPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { createCategory, deleteCategory } from "../../services/categoryService";
+
 
 const Filter = ({ onFilterChange, products, categories, setCategories }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -18,8 +19,15 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [selectedCategoryToEdit, setSelectedCategoryToEdit] = useState(null);
 
+  const [localCategories, setLocalCategories] = useState(categories);
+
   const { user } = useAuth();
 
+  useEffect(() => {
+    setLocalCategories(categories);
+  }, [categories]);
+
+  
   const handleCategoryChange = (category) => {
     setSelectedCategory(category.id);
     setSelectedSubcategory(""); // Resetear la subcategoría
@@ -68,23 +76,29 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
 
   const handleCreateCategory = async (name, subcategories) => {
     try {
-      // Create the category and get the new category data
+      // Crear la categoría
       const response = await createCategory(name, subcategories);
       if (response) {
-        setCategories((prevCategories) => [
-          {
-            ...response,
-            subcategories: subcategories.map((sub) => ({
-              name: sub,
-              categoryId: response.id,
-            })),
-          },
-          ...prevCategories,
-        ]);
+        // Actualizar el estado local
+        const newCategory = {
+          ...response,
+          subcategories: subcategories.map((sub) => ({
+            name: sub,
+            categoryId: response.id,
+          })),
+        };
+        
+        // Actualizar el estado local
+        setLocalCategories(prevCategories => [...prevCategories, newCategory]);
+        
+        // Si setCategories es proporcionado, actualizar el estado del padre
+        if (setCategories) {
+          setCategories(prevCategories => [newCategory, ...prevCategories]);
+        }
       }
     } catch (error) {
       console.error("Error al crear categoría:", error);
-      toast.error("Error al crear categoría");
+      throw error;
     } finally {
       handleCloseDialog();
     }
@@ -92,12 +106,24 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
 
   const handleDeleteCategory = async (category) => {
     try {
-      await deleteCategory(category);
-      setCategories((prevCategories) =>
-        prevCategories.filter((c) => c.id !== category.id)
-      );
+      const response = await deleteCategory(category);
+
+      if (response) {
+        // Actualizar el estado local
+        setLocalCategories(prevCategories =>
+          prevCategories.filter(c => c.id !== category.id)
+        );
+        
+        // Si setCategories es proporcionado, actualizar el estado del padre
+        if (setCategories) {
+          setCategories(prevCategories =>
+            prevCategories.filter(c => c.id !== category.id)
+          );
+        }
+      }
     } catch (error) {
       console.error("Error al eliminar categoría:", error);
+      throw error;
     } finally {
       handleCloseDialog();
     }
@@ -123,7 +149,7 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
         placeholder="Buscar productos..."
         className="mb-2 p-2 text-sm border rounded-md"
       />
-      <div className="flex bg-[#616161] gap-3 py-1 px-2 mt-4 mb-6 rounded-md w-full items-center">
+      <div className="flex bg-[#3b3b3b] gap-3 py-1 px-2 mt-4 mb-6 rounded-md w-full items-center">
         <p className="textRedHatDisplay font-bold text-[14px] text-start text-white">
           Precio de compra
         </p>
@@ -136,7 +162,7 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
       </div>
 
       <div className="slidecontainer mb-4 bg-[] flex items-center">
-        <p className="mr-2 text-[13px] text-[#8f8f8f] font-bold">$0</p>
+        <p className="mr-2 text-[13px] text-[#585858] font-bold">$0</p>
         <input
           type="range"
           min="1"
@@ -146,14 +172,14 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
           onChange={handlePriceChange}
           className="slider w-full"
         />
-        <p className="ml-2 text-[13px] text-[#8f8f8f] font-bold">$5000</p>
+        <p className="ml-2 text-[13px] text-[#585858] font-bold">$5000</p>
       </div>
 
       <button className="textRedHatDisplay font-bold text-[15px] mt-4 py-2 px-2 bg-[#ff8e4c] text-start text-white rounded-md w-full">
         Categorías
       </button>
       <div className="catalogo__categories mt-4 flex flex-col gap-1">
-        {categories.map((category) => (
+        {localCategories.map((category) => (
           <div key={category.id} className="w-full flex justify-end">
             <button
               onClick={() => handleCategoryChange(category)}
@@ -177,7 +203,7 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
             {user.role == "admin" && (
               <button
                 onClick={() => handleDelete(category)}
-                className="bg-[#ff4c4c] ms-2 p-2 rounded-md"
+                className="bg-[#ff8e4c] ms-2 p-2 rounded-md"
               >
                 <FontAwesomeIcon icon={faTrash} style={{ color: "#ffffff" }} />
               </button>
@@ -191,7 +217,7 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
               Seleccionar subcategoría:
             </label>
             <div className="flex flex-wrap gap-1 mt-2">
-              {categories
+              {localCategories
                 .find((category) => category.id == selectedCategory)
                 ?.subcategories?.map((subcategory) => (
                   <button
@@ -218,13 +244,13 @@ const Filter = ({ onFilterChange, products, categories, setCategories }) => {
               onClick={handleAddCategory}
               className={`textRedHatDisplayRegular text-[16px] border p-2 px-4 rounded-md mt-6 me-2 bg-[#79DA52] text-white border-none font-bold`}
             >
-              +
+              <FontAwesomeIcon icon={faFolderPlus} style={{color: "#ffffff",}} />
             </button>
           )}
         </div>
         <button
           onClick={clearFilters}
-          className="mt-6 textGabarito py-2 text-[15px] bg-red-500 text-white rounded-md w-full"
+          className="mt-6 textRedHatDisplayRegular font-bold py-2 text-[15px] bg-[#3d3737] text-white rounded-md w-full"
         >
           Limpiar filtros
         </button>

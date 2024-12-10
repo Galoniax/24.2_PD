@@ -10,7 +10,7 @@ const CategoryModal = ({
   isEdit,
   isCreate,
 }) => {
-  const [name, setName] = useState(category.name);
+  const [name, setName] = useState(category ? category.name : "");
   const [subcategoriesInput, setSubcategoriesInput] = useState([1]);
   const [subcategories, setSubcategories] = useState(
     subcategoriesInput.map(() => ({ value: "" }))
@@ -27,6 +27,7 @@ const CategoryModal = ({
   const handleRemoveInput = () => {
     if (subcategoriesInput.length > 1) {
       setSubcategoriesInput(subcategoriesInput.slice(0, -1));
+      setSubcategories(subcategories.slice(0, -1));
     }
   };
 
