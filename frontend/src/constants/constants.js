@@ -3,6 +3,6 @@ export const ROUTES = {
   HOME: "/",
   REGISTER: "/register",
   CATALOGO: "/catalogo",
-  //PROFILE: "/profile",
+  PROFILE: "/profile",
   PRODUCTO: "/producto/:id",
 };
