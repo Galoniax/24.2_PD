@@ -28,7 +28,7 @@ export function Product() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const [productCategory, setProductCategory] = useState(null);
   const [product, setProduct] = useState(null);
@@ -118,13 +118,13 @@ export function Product() {
   };
 
   useEffect(() => {
-    if (user === null) {
+    if (!isAuthenticated) {
       navigate(ROUTES.LOGIN);
       toast.error("Debes iniciar sesión");
     } else {
       fetchData();
     }
-  }, [id, user, categoriesData, productsData, reviewsData, productCategory]);
+  }, [id, user, productsData]);
 
   const handleProductClick = (product) => {
     navigate(ROUTES.PRODUCTO.replace(":id", product.id), {});
@@ -323,7 +323,7 @@ export function Product() {
             </div>
 
             <div className="mt-10 mb-16 max-h-[450px] overflow-y-auto">
-              {reviewsData.length > 0 ? (
+              {product && reviewsData.length > 0 ? (
                 reviewsData
                   .filter((review) => review.productId == product.id)
                   .map((review) => (

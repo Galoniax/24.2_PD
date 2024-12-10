@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { login, register } from "../services/authService";
 import { ROUTES } from "../constants/constants";
 import { toast } from "react-toastify";
@@ -10,7 +10,9 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("token") ? true : false
+  );
   const navigate = useNavigate();
 
  
@@ -24,11 +26,9 @@ export const AuthProvider = ({ children }) => {
       
       if (decodedToken.exp < Date.now() / 1000) {
         logout();
+        setTimeout(() => toast.error("Sesión expirada"), 100);
       }
-    } else {
-      toast.error("Debes iniciar sesion");
-      navigate(ROUTES.LOGIN);
-    }
+    } 
   }, []);
 
   const authenticate = async (email, password) => {
@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", token);
 
       setUser(decodedToken);
+      setIsAuthenticated(true);
 
       if (decodedToken.role) {
         navigate(ROUTES.HOME);

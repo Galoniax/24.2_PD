@@ -30,7 +30,7 @@ export function Catalogo() {
 
   const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -42,15 +42,16 @@ export function Catalogo() {
 
 
   useEffect(() => {
-    if (!user) {
-      toast.error("Debes iniciar sesion");
+    if (!isAuthenticated ) {
+      toast.error("Debes iniciar sesión");
       navigate(ROUTES.LOGIN);
+      return;
     } else {
       if (productsData.length > 0) {
         setFilteredProducts(productsData.slice(0, productLimit));
       }
     }
-  }, [user, categoriesData, productsData, reviewsData]);
+  }, [user, productsData]);
 
   const handleCreate = () => {
     setIsCreate(true);
@@ -211,6 +212,8 @@ export function Catalogo() {
               onChange={handleFetchData}
               reviews={reviewsData}
               categories={categoriesData}
+              user={user}
+              isAuthenticated={isAuthenticated}
             />
           )}
 

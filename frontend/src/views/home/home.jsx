@@ -26,7 +26,7 @@ export function Home() {
   const getRandomReviews = async () => {
     try {
       
-      const randomReviews = reviews
+      const randomReviews = reviewsData
         .sort(() => 0.5 - Math.random())
         .slice(0, 3); // Selecciona 3 reseñas aleatorias
 

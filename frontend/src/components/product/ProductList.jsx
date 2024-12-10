@@ -11,11 +11,9 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 import { ROUTES } from "../../constants/constants";
 
-
-const ProductList = ({ products, onChange, reviews, categories }) => {
+const ProductList = ({ products, onChange, reviews, categories, user, isAuthenticated }) => {
   const navigate = useNavigate();
 
-  const { user } = useAuth();
   const { addToCart } = useContext(CartContext);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -39,7 +37,9 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
   const handleSaveChanges = async (product) => {
     try {
       await updateProduct(product);
-      const updatedProducts = products.map((p) => (p.id === product.id ? product : p));
+      const updatedProducts = products.map((p) =>
+        p.id === product.id ? product : p
+      );
       onChange(updatedProducts);
     } catch (error) {
       console.error("Error al actualizar el producto:", error);
@@ -47,7 +47,6 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
       handleCloseDialog();
     }
   };
-
 
   const handleDeleteProduct = async (product) => {
     try {
@@ -79,6 +78,13 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
   };
 
   const handleProductClick = (product) => {
+    if (!isAuthenticated) {
+      console.log("Navigation blocked - not authenticated");
+      toast.error("Debes iniciar sesión");
+      navigate(ROUTES.LOGIN);
+      return;
+    }
+
     navigate(ROUTES.PRODUCTO.replace(":id", product.id), {});
   };
 
@@ -127,41 +133,35 @@ const ProductList = ({ products, onChange, reviews, categories }) => {
               </div>
             </div>
 
-            
-             
-               
-              {user && user.role == "admin" ? (
-                <div className="mt-10 flex space-x-2 justify-center">
-                  <button
-                    onClick={() => handleEdit(product)}
-                    className="bg-[#2785aa] hover:bg-[#256179] text-[13px] w-full text-white font-semibold py-2 px-2 rounded"
-                  >
-                    Editar libro
-                  </button>
-                  <button
-                    onClick={() => handleDelete(product)}
-                    className="bg-red-500 hover:bg-red-600 text-white text-[13px] w-full font-semibold py-2 px-2 rounded"
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              ) : product.stock > 0 ? (
+            {user && user.role == "admin" ? (
+              <div className="mt-10 flex space-x-2 justify-center">
                 <button
-                  onClick={() => addToCart(product)}
-                  className="bg-[#383838] hover:bg-[#6d6d6d] w-full text-[14.5px] text-white font-semibold py-2 mt-4 px-4 rounded"
+                  onClick={() => handleEdit(product)}
+                  className="bg-[#2785aa] hover:bg-[#256179] text-[13px] w-full text-white font-semibold py-2 px-2 rounded"
                 >
-                  Agregar al carrito
+                  Editar libro
                 </button>
-              ) : null}
+                <button
+                  onClick={() => handleDelete(product)}
+                  className="bg-red-500 hover:bg-red-600 text-white text-[13px] w-full font-semibold py-2 px-2 rounded"
+                >
+                  Eliminar
+                </button>
+              </div>
+            ) : product.stock > 0 ? (
+              <button
+                onClick={() => addToCart(product)}
+                className="bg-[#383838] hover:bg-[#6d6d6d] w-full text-[14.5px] text-white font-semibold py-2 mt-4 px-4 rounded"
+              >
+                Agregar al carrito
+              </button>
+            ) : null}
 
-              {product.stock <= 0 && (
-                <button
-                  className="bg-[#ce3d3d] hover:bg-[#6d6d6d] w-full text-[13px] text-white font-semibold py-2 mt-4 px-4 rounded"
-                >
-                  Agotado
-                </button>
-              )}
-            
+            {product.stock <= 0 && (
+              <button className="bg-[#ce3d3d] hover:bg-[#6d6d6d] w-full text-[13px] text-white font-semibold py-2 mt-4 px-4 rounded">
+                Agotado
+              </button>
+            )}
           </div>
         ))}
 
