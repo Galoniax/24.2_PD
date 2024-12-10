@@ -1,11 +1,11 @@
 import { prisma } from "../providers/prisma.js";
 
 export class PurchaseService {
-  static async getAll({ user }) {
+  static async getAllById({ userId }) {
     try {
       const purchases = await prisma.purchase.findMany({
         where: {
-          userId: user.id,
+          userId,
         },
         include: {
           products: {

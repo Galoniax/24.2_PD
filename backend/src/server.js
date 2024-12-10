@@ -13,6 +13,7 @@ import { categoryRouter } from "./routes/categoryRoutes.js";
 import { productRouter } from "./routes/productRoutes.js";
 import { pucharseRouter } from "./routes/pucharseRoutes.js";
 import { reviewRouter } from "./routes/reviewRoutes.js";
+import { userRouter } from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(`${API_PREFIX}/categories`, categoryRouter);
 app.use(`${API_PREFIX}/products`, productRouter);
 app.use(`${API_PREFIX}/purchases`, pucharseRouter);
 app.use(`${API_PREFIX}/reviews`, reviewRouter);
+app.use(`${API_PREFIX}/users`, userRouter);
 
 
 
