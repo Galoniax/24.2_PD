@@ -12,11 +12,11 @@ import { Sidebar } from "../sidebar/sidebar"; // Importa el componente Sidebar
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
-import "./navbar.css"; // Importa los estilos CSS para la barra de navegación
+import "./navbar.css";
 
 export function Navbar() {
   const { cart } = useContext(CartContext);
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -93,7 +93,7 @@ export function Navbar() {
 
         {/* Botones de autenticación */}
         <div className="auth-buttons flex gap-4">
-          {user ? (
+          {user && isAuthenticated ? (
             <>
               {user.role !== "admin" && (
                 <button

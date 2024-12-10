@@ -4,13 +4,13 @@ import Layout from "../layout/layout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 import {
   Home,
   Login,
   Register,
   Catalogo,
   Product,
+  Profile
 } from "../views/";
 
 import { CartProvider } from "../context/CartContext";
@@ -29,6 +29,7 @@ const AppRoutes = () => {
               <Route path={ROUTES.LOGIN} element={<Login />} />
               <Route path={ROUTES.CATALOGO} element={<Catalogo />} />
               <Route path={ROUTES.PRODUCTO} element={<Product />} />
+              <Route path={ROUTES.PROFILE} element={<Profile />} />
             </Routes>
           </Layout>
         </CartProvider>
