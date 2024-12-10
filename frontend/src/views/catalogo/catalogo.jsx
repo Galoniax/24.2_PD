@@ -14,9 +14,11 @@ import Loader from "../../components/animation/Loader";
 import { createProduct } from "../../services/productService";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 import ProductModal from "../../components/dialogs/ProductModal";
+
+import { ROUTES } from "../../constants/constants";
 
 export function Catalogo() {
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -30,36 +32,23 @@ export function Catalogo() {
 
   const { user } = useAuth();
 
-
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [reviews, setReviews] = useState([]);
-
 
   const { categoriesData } = useCategory();
   const { productsData } = useProducts();
   const { reviewsData } = useReviews();
 
-  const fetchData = async () => {
-    try {
-      setCategories(categoriesData);
-      setProducts(productsData);
-      setFilteredProducts(productsData);
-      setReviews(reviewsData);
-
-    } catch (error) {
-      console.error("Error al obtener productos:", error);
-    } finally {
-      setLoading(false); // Oculta el Loader cuando termine
-    }
-  };
 
   useEffect(() => {
-    if (user === null) {
-      navigate("/login");
+    if (!user) {
       toast.error("Debes iniciar sesion");
+      navigate(ROUTES.LOGIN);
     } else {
-      fetchData();
+      if (productsData.length > 0) {
+        setFilteredProducts(productsData.slice(0, productLimit));
+      }
     }
   }, [user, categoriesData, productsData, reviewsData]);
 
@@ -101,7 +90,7 @@ export function Catalogo() {
     searchTerm,
     priceTerm
   ) => {
-    let filtered = [...products];
+    let filtered = [...productsData];
 
     if (categoryId) {
       filtered = filtered.filter((product) => product.categoryId == categoryId);
@@ -137,7 +126,7 @@ export function Catalogo() {
     setLoading(false);
   };
 
-  const getProductCount = () => products.length;
+  const getProductCount = () => productsData.length;
 
   const handleLimitChange = useCallback(
     (event) => {
@@ -145,9 +134,9 @@ export function Catalogo() {
       setProductLimit(limit);
 
       // Aplicar el límite sobre la lista filtrada
-      setFilteredProducts(products.slice(0, limit));
+      setFilteredProducts(productsData.slice(0, limit));
     },
-    [products]
+    [productsData]
   );
 
   return user ? (
@@ -156,8 +145,8 @@ export function Catalogo() {
         <div className="catalogo__content w-[25%]">
           <Filter
             onFilterChange={handleFilterChange}
-            products={products}
-            categories={categories}
+            products={productsData}
+            categories={categoriesData}
             setCategories={setCategories}
           />
           
@@ -203,13 +192,10 @@ export function Catalogo() {
               {user.role == "admin" && (
                 <div className="flex items-center">
                   <button
-                    className="bg-[#79da52] text-white text-[14px] font-bold py-1 px-4 rounded"
+                    className="bg-[#79da52] textRedHatDisplayRegular font-bold  text-white text-[14px] flex items-center py-1 px-4 rounded"
                     onClick={() => handleCreate()}
                   >
-                    <FontAwesomeIcon
-                      className="mr-2 text-[16px]"
-                      icon={faPlus}
-                    />
+                    <FontAwesomeIcon icon={faArrowUpFromBracket} style={{color: "#ffffff", marginRight: "10px", width: "15px", height: "15px" }} />
                     Agregar Producto
                   </button>
                 </div>
@@ -223,13 +209,13 @@ export function Catalogo() {
             <ProductList
               products={filteredProducts}
               onChange={handleFetchData}
-              reviews={reviews}
-              categories={categories}
+              reviews={reviewsData}
+              categories={categoriesData}
             />
           )}
 
           <ProductModal
-            categories={categories}
+            categories={categoriesData}
             onCreate={handleCreateProduct}
             isCreate={isCreate}
             onClose={handleCloseDialog}

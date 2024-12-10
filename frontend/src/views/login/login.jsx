@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth"; // Importa el hook de autenticación actualizado
 import "./login.css";
@@ -10,8 +10,6 @@ export function Login() {
   const [password, setPassword] = useState("");
 
   const isFormValid = email && password;
-
-  
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);

@@ -1,0 +1,21 @@
+.bg-Profile {
+    background-image: url(../../assets/images/ProfileBg.jpg);
+    background-size: cover;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: #29292900;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background-color: #333333;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-track {
+    background-color: #ffffff00;
+  }

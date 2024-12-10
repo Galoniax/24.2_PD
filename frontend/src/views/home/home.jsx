@@ -3,8 +3,10 @@ import { ProductSection } from "../../components/carousel/ProductSection";
 import "./home.css";
 import { SoundWave } from "../../components/animation/Wave";
 import PlaylistPlayer from "../../components/spotify/PlaylistPlayer";
+
 import { useCategory } from "../../hooks/useCategory";
 import { useReviews } from "../../hooks/useReviews";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faYoutube,
@@ -15,25 +17,16 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 export function Home() {
-  const [categories, setCategories] = useState([]);
   const [reviews, setReviews] = useState([]);
 
-  const { fetchAllReviews } = useReviews();
-  const { fetchAllCategories } = useCategory();
+  const { categoriesData } = useCategory();
+  const { reviewsData } = useReviews();
 
-  const fetchData = async () => {
-    try {
-      const categoriesData = await fetchAllCategories();
-      setCategories(categoriesData);
-    } catch (error) {
-      console.error("Error al obtener los datos:", error);
-    }
-  };
-
+  
   const getRandomReviews = async () => {
     try {
-      const reviewsData = await fetchAllReviews();
-      const randomReviews = reviewsData
+      
+      const randomReviews = reviews
         .sort(() => 0.5 - Math.random())
         .slice(0, 3); // Selecciona 3 reseñas aleatorias
 
@@ -45,7 +38,6 @@ export function Home() {
 
   useEffect(() => {
     getRandomReviews();
-    fetchData();
   }, []);
 
   const heights = [100, 40, 60, 40, 60, 30, 110, 80, 60, 20, 30, 80, 100];
@@ -130,7 +122,7 @@ export function Home() {
             <div className="mt-10"></div>
           </div>
           <div className="w-[50%] flex flex-col justify-center ">
-            {categories.map((category) => (
+            {categoriesData.map((category) => (
               <div key={category.id} className="w-[90%]  ">
                 <p className="textNunitoSansRegular p-[20px] border-t-[1px]  border-t-[#27272725] text-[#252525] text-[22px] text-start items-start leading-relaxed hover:bg-[#F1720C] hover:text-[#fff]">
                   {category.name}
@@ -199,7 +191,7 @@ export function Home() {
                   No hay reseñas disponibles.
                 </p>
               ) : (
-                reviews.map((review) => (
+                reviewsData.map((review) => (
                   <div
                     key={review.id}
                     className="review-card mt-10 border-[1px] p-10 border-[#f6f6f757] hover:bg-[#F1720C] hover:text-[#fff]"

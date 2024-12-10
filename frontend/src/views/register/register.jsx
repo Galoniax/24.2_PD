@@ -27,7 +27,6 @@ export function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (isFormValid) {
       try {
         await registerUser(username, email, password);
