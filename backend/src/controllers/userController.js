@@ -1,4 +1,4 @@
-import { UserService } from "../service/user.service.js";
+import { UserService } from "../services/userService.js";
 import { hashPassword } from "../utils/hash.js";
 
 export class UserController {
@@ -53,9 +53,9 @@ export class UserController {
   }
 
   static async delete(req, res) {
+    const { id } = req.params;
     try {
-      const { id } = req.params;
-      const user = await UserService.delete({ id });
+      await UserService.delete({ id });
       res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ error: error.message });

@@ -62,30 +62,4 @@ export class AuthController {
     }
   }
 
-  // Ruta para obtener el perfil del usuario
-  static async profile(req, res) {
-    try {
-      // Obtener el token desde los encabezados
-      const token = req.headers.authorization?.split(" ")[1];  // Asumiendo que el token viene como 'Bearer token'
-
-      if (!token) {
-        return res.status(401).json({ message: "Token no proporcionado" });
-      }
-
-      // Verificar y decodificar el token
-      const decoded = verifyToken(token);
-
-      // Obtener los detalles del usuario basados en el ID del token
-      const user = await UserService.getById(decoded.id);
-
-      if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
-      }
-
-      return res.status(200).json({ user });
-    } catch (error) {
-      console.error("Error en obtener perfil:", error.message);
-      return res.status(500).json({ message: "Error interno del servidor" });
-    }
-  }
 }

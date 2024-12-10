@@ -1,7 +1,7 @@
 import { ReviewService } from "../services/reviewService.js";
 
 export class ReviewController {
-    static async getAllReviews(req, res) {
+    static async getAll(req, res) {
         try {
             const reviews = await ReviewService.getAll();
             res.status(200).json(reviews);
@@ -24,8 +24,8 @@ export class ReviewController {
     }
 
     static async updateReview(req, res) {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
             const review = req.body;
             const updatedReview = await ReviewService.update({ id, review });
 

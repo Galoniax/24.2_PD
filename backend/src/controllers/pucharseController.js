@@ -1,12 +1,12 @@
 import { PurchaseService } from "../services/pucharseService.js";
 
 export class PucharseController {
-    static async getAllPurchases(req, res) {
+    static async getAllById(req, res) {
         try {
-            const { user } = req;
-            const purchases = await PurchaseService.getAll({ user });
+            const { id } = req;
+            const purchases = await PurchaseService.getAllById({ userId: id });
              
-            res.json(purchases);
+            res.status(200).json(purchases);
         } catch (error) {
             console.error("Error al obtener las compras:", error);
             res.status(500).json({ error: "Error al obtener las compras." });
