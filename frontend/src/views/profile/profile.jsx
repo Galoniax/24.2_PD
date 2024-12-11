@@ -71,7 +71,7 @@ export function Profile() {
         </h1>
       </div>
 
-      {pucharseData.length > 0 && (
+      {pucharseData.length > 0 ? (
         <div className="overflow-y-auto max-h-[300px] max-w-[80%] m-auto">
         <table className="w-full m-auto mt-10 bg-[#ffffff]">
           <thead className="sticky top-0 bg-[#292929]">
@@ -84,6 +84,7 @@ export function Profile() {
             </tr>
           </thead>
           <tbody>
+
           
           {pucharseData.map((pucharse) => (
               <tr className="textNunitoSansLight text-[13px] text-[#383838] border-b-[1px]" key={pucharse.id}>
@@ -107,6 +108,12 @@ export function Profile() {
         </table>
         </div>
         
+      ) : (
+        <div className="flex justify-center items-center h-[300px]">
+          <h1 className="textRedHatDisplay text-[16px] text-[#444444]">
+            No has comprado ningun producto
+          </h1>
+        </div>
       )}
       </div>
     </div>

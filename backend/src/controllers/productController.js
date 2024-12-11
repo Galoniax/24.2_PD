@@ -45,31 +45,20 @@ export class ProductController {
         return res.status(404).json({ error: "Producto no encontrado" });
       }
 
-      const {
-        name,
-        description,
-        price,
-        imageURL,
-        stock,
-        categoryId,
-        subcategoryId,
-      } = req.body;
-
-      product.name = name ?? product.name;
-      product.description = description ?? product.description;
-      product.price = price ?? product.price;
-      product.imageURL = imageURL ?? product.imageURL;
-      product.stock = stock ?? product.stock;
-      product.categoryId = categoryId ?? product.categoryId;
-      product.subcategoryId = subcategoryId ?? product.subcategoryId;
-
-      /*if (product.stock == 0) {
-        product.status = "Agotado";
-      } else {
-        product.status = "Disponible"; // Optional: reset status when stock > 0
-      }*/
-
-      await ProductService.update({ id, product });
+      const updatedData = {
+        name: req.body.name ?? existingProduct.name,
+        description: req.body.description ?? existingProduct.description,
+        price: req.body.price ?? existingProduct.price,
+        imageURL: req.body.imageURL ?? existingProduct.imageURL,
+        stock: req.body.stock ?? existingProduct.stock,
+        categoryId: req.body.categoryId ?? existingProduct.categoryId,
+        subcategoryId: req.body.subcategoryId ?? existingProduct.subcategoryId,
+        status: req.body.stock == 0 || (req.body.stock === undefined && existingProduct.stock == 0) 
+          ? "agotado" 
+          : "disponible"
+      };
+  
+      await ProductService.update({ id, product: updatedData });
 
       res.status(200).json(product);
     } catch (error) {

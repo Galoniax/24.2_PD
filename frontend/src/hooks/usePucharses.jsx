@@ -15,7 +15,7 @@ export const usePucharses = (user) => {
 
     useEffect(() => {
         fetchPucharsesData();
-    }, []);
+    }, [user]);
 
     return { pucharseData };
 };

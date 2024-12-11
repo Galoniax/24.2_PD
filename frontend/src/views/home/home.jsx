@@ -121,10 +121,10 @@ export function Home() {
             </p>
             <div className="mt-10"></div>
           </div>
-          <div className="w-[50%] flex flex-col justify-center ">
+          <div className="w-[50%] flex flex-col justify-center max-h-[400px] overflow-y-auto">
             {categoriesData.map((category) => (
               <div key={category.id} className="w-[90%]  ">
-                <p className="textNunitoSansRegular p-[20px] border-t-[1px]  border-t-[#27272725] text-[#252525] text-[22px] text-start items-start leading-relaxed hover:bg-[#F1720C] hover:text-[#fff]">
+                <p className="textNunitoSansRegular p-[20px] border-t-[1px]  border-t-[#27272725] text-[#252525] text-[20px] text-start items-start leading-relaxed hover:bg-[#F1720C] hover:text-[#fff]">
                   {category.name}
                 </p>
               </div>

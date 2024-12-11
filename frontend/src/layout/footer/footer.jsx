@@ -1,4 +1,5 @@
 import React from "react";
+import { ROUTES } from "../../constants/constants";
 
 import {
   faYoutube,
@@ -58,13 +59,13 @@ export function Footer() {
             Cuenta
           </h3>
           <Link
-            to="/login"
+            to={ROUTES.LOGIN}
             className="textRedHatDisplayRegular indent-2 hover:text-[#F7A22F]"
           >
             Iniciar sesión
           </Link>
           <Link
-            to="/register"
+            to={ROUTES.REGISTER}
             className="textRedHatDisplayRegular indent-2 hover:text-[#F7A22F]"
           >
             Registrarse

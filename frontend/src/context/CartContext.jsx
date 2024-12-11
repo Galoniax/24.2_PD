@@ -32,6 +32,8 @@ export const CartProvider = ({ children }) => {
         return [...prevCart, { ...product, quantity: 1 }];
       }
     });
+
+    toast.success("Producto agregado al carrito", { autoClose: 800 });
   };
   
    // Función para vaciar el carrito

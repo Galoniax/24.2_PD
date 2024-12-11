@@ -26,6 +26,10 @@ export const createUser = async (user) => {
       toast.success(response.data.message || "Usuario creado con exito");
     }
 
+    if (response.status === 409) {
+      toast.error(response.data.message || "El email ya esta registrado");
+    }
+
     return response.data;
   } catch (error) {
     if (error.response?.status === 500) {

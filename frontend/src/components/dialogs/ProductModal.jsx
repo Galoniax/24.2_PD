@@ -54,7 +54,6 @@ const ProductModal = ({
                     description,
                     price,
                     stock,
-                    status: stock === 0 ? "agotado" : "disponible",
                     imageURL,
                     categoryId,
                     subcategoryId,
@@ -65,7 +64,6 @@ const ProductModal = ({
                     description,
                     price,
                     stock,
-                    status: stock === 0 ? "agotado" : "disponible",
                     imageURL,
                     categoryId,
                     subcategoryId,
@@ -90,6 +88,7 @@ const ProductModal = ({
 
             <label className="textRedHatDisplayMedium text-[14px] block mb-2 mt-6 text-white">
               Descripción:
+              <div className="flex gap-3">
               <textarea
                 required
                 placeholder="Ingrese la descripción del producto"
@@ -98,6 +97,14 @@ const ProductModal = ({
                 value={description}
                 className="border p-2 rounded w-full text-[14px] text-[#272727]"
               />
+              <button
+                  onClick={() => setDescription("")}
+                  className="textRedHatDisplayMedium text-[14px] bg-[#DC2626] block p-2 rounded-[5px]  text-white"
+                >
+                  X
+                </button>
+
+              </div>
             </label>
 
             <label className="textRedHatDisplayMedium text-[14px] block mb-2 mt-6 text-white">
@@ -112,7 +119,7 @@ const ProductModal = ({
                   const validInput = inputValue.replace(/[^0-9.]/g, "");
                   setPrice(validInput);
                 }}
-                value={price}
+                value={price || 0}
                 className="border p-2 rounded w-full text-[14px] text-[#272727]"
               />
             </label>
@@ -136,14 +143,22 @@ const ProductModal = ({
 
             <label className="textRedHatDisplayMedium text-[14px] block mb-2 mt-6 text-white">
               URL´s Imagen:
-              <input
-                type="text"
-                placeholder="Ingrese la URL de la imagen del producto"
-                onChange={(e) => setImageURL(e.target.value)}
-                value={imageURL}
-                required
-                className="border p-2 rounded w-full text-[14px] text-[#272727]"
-              />
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="Ingrese la URL de la imagen del producto"
+                  onChange={(e) => setImageURL(e.target.value)}
+                  value={imageURL}
+                  required
+                  className="border p-2 rounded w-full text-[14px] text-[#272727]"
+                />
+                <button
+                  onClick={() => setImageURL("")}
+                  className="textRedHatDisplayMedium text-[14px] bg-[#DC2626] block p-2 rounded-[5px]  text-white"
+                >
+                  X
+                </button>
+              </div>
             </label>
 
             <label className="textRedHatDisplayMedium text-[14px] block mb-2 mt-6 text-white">

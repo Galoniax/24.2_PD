@@ -3,7 +3,7 @@ import { PurchaseService } from "../services/pucharseService.js";
 export class PucharseController {
     static async getAllById(req, res) {
         try {
-            const { id } = req;
+            const { id } = req.params;
             const purchases = await PurchaseService.getAllById({ userId: id });
              
             res.status(200).json(purchases);
