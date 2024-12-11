@@ -13,17 +13,20 @@ export class UserController {
 
   static async create(req, res) {
     try {
-      const { name, email, password, role } = req.body;
+      const user = req.body;
 
-      const hashedPassword = await hashPassword(password);
+      const existingUser = await UserService.getByEmail(user.email);
 
-      const user = await UserService.create({
-        username: name,
-        email,
-        password: hashedPassword,
-        role,
-      });
-      res.status(201).json(user);
+      if (existingUser) {
+        return res.status(409).json({ message: "Email ya registrado" });
+      }
+
+      const hashedPassword = await hashPassword(user.password);
+
+      user.password = hashedPassword;
+
+      const createdUser = await UserService.createWithRole({ user });
+      res.status(201).json(createdUser);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

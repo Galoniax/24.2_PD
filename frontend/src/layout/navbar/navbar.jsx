@@ -7,7 +7,9 @@ import { filterRoutesByRole } from "../../constants/navbar-routes";
 import { ROUTES } from "../../constants/constants";
 import { useLocation } from "react-router-dom";
 import { CartContext } from "../../context/CartContext"; // Import CartContext
+import UserModal from "../../components/dialogs/UserModal";
 import { Sidebar } from "../sidebar/sidebar"; // Importa el componente Sidebar
+import { createUser } from "../../services/userService";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
@@ -22,9 +24,18 @@ export function Navbar() {
 
   const [scrolled, setScrolled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
- 
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
 
   const toggleSidebarVisibility = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleUserModalVisibility = () => setIsUserModalOpen(!isUserModalOpen);
+
+  const handleCreateUser = async (user) => {
+    try {
+      await createUser(user);
+    } catch (error) {
+      console.error("Error al crear el usuario:", error);
+    } 
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -32,9 +43,8 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
   // Esta función maneja el desplazamiento suave a una sección específica de la página
-  const handleScrollToSection = (path) => {
+  {/*const handleScrollToSection = (path) => {
     const [route, hash] = path.split("#"); // Separa la ruta principal y el hash (la sección) en dos partes
     if (route) navigate(route); // Si hay una ruta principal, navega a ella
     if (hash) {
@@ -43,6 +53,33 @@ export function Navbar() {
         const element = document.getElementById(hash); // Busca el elemento con el ID correspondiente al hash
         if (element) element.scrollIntoView({ behavior: "smooth" }); // Desplaza la página suavemente a la sección
       }, 100); // Añade un pequeño retraso para asegurarse de que la navegación haya sido ejecutada antes de hacer el desplazamiento
+    }
+  };
+  */}
+
+
+  const handleScrollToSection = (route) => {
+    const path = typeof route === "object" ? route.path : route;
+
+    if (!path) return;
+
+    const [routePath, hash] = path.split("#");
+
+    if (routePath) navigate(routePath);
+
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash); 
+        if (element) element.scrollIntoView({ behavior: "smooth" }); 
+      }, 100);
+    }
+  };
+
+  const handleRouteClick = (route) => {
+    if (route.name === "Agregar perfil" && user?.role === "admin") {
+      toggleUserModalVisibility();
+    } else {
+      handleScrollToSection(route);
     }
   };
 
@@ -80,9 +117,9 @@ export function Navbar() {
         {/* Navegación */}
         <ul className="navbar-nav flex">
           {filteredRoutes.map((route) => (
-            <li key={route.path} className="nav-item ps-[40px]">
+            <li key={route.path || route.name} className="nav-item ps-[40px]">
               <span
-                onClick={() => handleScrollToSection(route.path)}
+                onClick={() => handleRouteClick(route)}
                 className={`nav-link cursor-pointer ${getTextColor()}`}
               >
                 {route.name}
@@ -91,6 +128,9 @@ export function Navbar() {
           ))}
         </ul>
 
+        
+
+      
         {/* Botones de autenticación */}
         <div className="auth-buttons flex gap-4">
           {user && isAuthenticated ? (
@@ -131,6 +171,16 @@ export function Navbar() {
 
       {/* Sidebar */}
       {isSidebarOpen && <Sidebar onClose={toggleSidebarVisibility} />}
+
+      {isUserModalOpen && (
+        <UserModal 
+          onClose={toggleUserModalVisibility} 
+          user={user}
+          onCreate={handleCreateUser}
+        />
+      )}
+
+    
     </nav>
   );
 }
