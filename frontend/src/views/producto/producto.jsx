@@ -45,7 +45,7 @@ export function Product() {
 
   const { categoriesData } = useCategory();
   const { productsData } = useProducts();
-  const { reviewsData } = useReviews();
+  const { reviewsData, addReview } = useReviews();
 
   const toggleDescriptionVisibility = () => {
     setIsDescriptionVisible(!isDescriptionVisible);
@@ -69,6 +69,7 @@ export function Product() {
   };
 
   const handleNewReview = (newReview) => {
+    addReview(newReview);
     const updatedReviews = [...reviewsData, newReview];
 
     const { averageRating, reviewCount } = calculateAverageRating(
@@ -130,7 +131,7 @@ export function Product() {
     } else {
       fetchData();
     }
-  }, [id, user, productsData]);
+  }, [id, user, productsData, reviewsData]);
 
   const handleProductClick = (product) => {
     navigate(ROUTES.PRODUCTO.replace(":id", product.id), {});

@@ -34,7 +34,7 @@ export const createReview = async (review) => {
         const response = await axiosInterceptor.post("/api/v1/reviews/create", review);
 
         if (response.status === 201) {
-            toast.success(response.data.message || "Resena creada con exito");
+            toast.success(response.data.message || "Reseña creada con exito");
         }
 
         return response.data;

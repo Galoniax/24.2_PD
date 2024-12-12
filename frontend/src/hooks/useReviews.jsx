@@ -12,11 +12,16 @@ export const useReviews = () => {
         } catch (error) {
             console.error("Error al obtener reviews:", error);
         }
+
+       
+    };
+    const addReview = (newReview) => {
+        setReviews(prevReviews => [...prevReviews, newReview]);
     };
 
     useEffect(() => {
         fetchReviewsData();
     }, []);
 
-    return { reviewsData };
+    return { reviewsData, addReview };
 };
