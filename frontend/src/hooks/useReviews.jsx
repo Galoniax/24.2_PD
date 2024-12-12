@@ -19,9 +19,13 @@ export const useReviews = () => {
         setReviews(prevReviews => [...prevReviews, newReview]);
     };
 
+    const removeReview = (reviewId) => {
+        setReviews(prevReviews => prevReviews.filter(review => review.id !== reviewId));
+    };
+
     useEffect(() => {
         fetchReviewsData();
     }, []);
 
-    return { reviewsData, addReview };
+    return { reviewsData, addReview, removeReview };
 };

@@ -45,7 +45,7 @@ export function Product() {
 
   const { categoriesData } = useCategory();
   const { productsData } = useProducts();
-  const { reviewsData, addReview } = useReviews();
+  const { reviewsData, addReview, removeReview } = useReviews();
 
   const toggleDescriptionVisibility = () => {
     setIsDescriptionVisible(!isDescriptionVisible);
@@ -131,7 +131,7 @@ export function Product() {
     } else {
       fetchData();
     }
-  }, [id, user, productsData, reviewsData]);
+  }, [id, user, productsData]);
 
   const handleProductClick = (product) => {
     navigate(ROUTES.PRODUCTO.replace(":id", product.id), {});
@@ -158,14 +158,14 @@ export function Product() {
     if (confirmDelete) {
       try {
         await deleteReview(review);
-        setReviews((prevReviews) =>
-          prevReviews.filter((r) => r.id != review.id)
-        );
+
+        removeReview(review.id);
 
         // Actualizar el promedio y la cantidad de reseñas
+        const updatedReviews = reviewsData.filter((r) => r.id !== review.id);
         const { averageRating, reviewCount } = calculateAverageRating(
           product.id,
-          reviewsData.filter((r) => r.id != review.id)
+          updatedReviews
         );
         setAverageRating(averageRating);
         setReviewCount(reviewCount);
