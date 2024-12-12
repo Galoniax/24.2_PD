@@ -1,9 +1,11 @@
 # 24.2_PD - SoundWave
 ## Scripts para levantar
-- npm run dev: Inicia la aplicación en modo desarrollo usando Vite.
-- npm run json-server: Inicia el servidor JSON Server para simular una API REST, observando el archivo db.json en el directorio ../backend/db en el puerto 3001.
+- npm run dev: Inicia la aplicación en modo desarrollo usando Vite. Usar comando en carpetas backend y frontend.
+  // npm run json-server: Inicia el servidor JSON Server para simular una API REST, observando el archivo db.json en el directorio ../backend/db en el puerto 3001.
+  // npm run start: Inicia ambos comandos (json-server & run dev) con Concurrently.
+- docker-compose up: Levanta docker y la base de datos.
+- npx prisma db seed: Levanta los datos necesarios para agregar variedad (admin).
 
-- npm run start: Inicia ambos comandos (json-server & run dev) con Concurrently.
 
 ## Dependencias 
 ### Principales
@@ -12,6 +14,22 @@
 - react-dom (^18.3.1): Biblioteca de React para manejar el DOM.
 - react-router-dom (^6.27.0): Para manejar el enrutamiento de la aplicación.
 - react-toastify (^10.0.6): Para mostrar notificaciones emergentes.
+
+## Backend
+- prisma (^5.22.0): Base de datos con postgres.
+- bcrypt (^5.1.1): Encriptador de contraseñas.
+- cors (^2.8.5)
+- express (^4.21.1): Entorno Backend
+- Morgar, Joi, Zod: Validadores y Middlewares.
+- JWT (^9.0.2): Generador de tokens.
+- Nodemon (^3.1.7): Actualizador de cambios
+
+### Comandos
+- npm init -y
+- npm install @prisma/client bcrypt cors dotenv express joi jsonwebtoken morgan zod
+- npm install --save-dev nodemon prisma
+- npx prisma init
+- npx prisma migrate dev
 
 ## Dependencias de Desarrollo
 - @eslint/js (^9.13.0): Configuración de ESLint en JavaScript.
