@@ -65,7 +65,10 @@ export const createPurchase = async (userId, cart, product = null) => {
       toast.success(response.data.message || "Compra realizada con exito");
     }
 
-    return response.data;
+    return {
+      pucharseData: response.data,
+      pucharseProducts: purchase.products,
+    }
   } catch (error) {
     console.error("Error al crear la compra", error);
 

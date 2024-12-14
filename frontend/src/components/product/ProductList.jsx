@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { updateProduct, deleteProduct } from "../../services/productService";
 
-import { useAuth } from "../../hooks/useAuth";
 import { CartContext } from "../../context/CartContext";
 import ProductModal from "../../components/dialogs/ProductModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

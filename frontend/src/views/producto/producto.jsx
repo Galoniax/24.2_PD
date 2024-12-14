@@ -44,7 +44,7 @@ export function Product() {
   const { addToCart } = useContext(CartContext);
 
   const { categoriesData } = useCategory();
-  const { productsData } = useProducts();
+  const { productsData, updateProductAfterPurchase } = useProducts();
   const { reviewsData, addReview, removeReview } = useReviews();
 
   const toggleDescriptionVisibility = () => {
@@ -142,8 +142,11 @@ export function Product() {
 
     if (confirmPucharse) {
       try {
-        await createPurchase(user.id, [], product);
-        console.log("Compra realizada:", purchase);
+        const { pucharseData, pucharseProducts } = await createPurchase(user.id, [], product);
+
+        updateProductAfterPurchase(pucharseProducts);
+
+        console.log("Compra realizada:", pucharseData);
       } catch (error) {
         console.error("Error al realizar la compra:", error);
       }

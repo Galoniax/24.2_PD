@@ -14,9 +14,29 @@ export const useProducts = () => {
     }
   };
 
+  const updateProductAfterPurchase = (purchasedProducts) => {
+    if (!purchasedProducts || !Array.isArray(purchasedProducts)) {
+      console.error("Invalid purchased products data");
+      return;
+    }
+
+    setProducts(prevProducts => 
+      prevProducts.map(product => {
+        const purchasedProduct = purchasedProducts.find(p => p.productId === product.id);
+        if (purchasedProduct) {
+          return {
+            ...product,
+            stock: product.stock - purchasedProduct.quantity
+          };
+        }
+        return product;
+      })
+    );
+  };
+
   useEffect(() => {
     fetchProductsData();
   }, []);
 
-  return { productsData };
+  return { productsData, updateProductAfterPurchase };
 };
