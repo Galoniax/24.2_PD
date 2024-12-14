@@ -64,5 +64,9 @@
 ### Concurrently
 - ("scripts")
 - "start": "concurrently \"npm run dev\" \"npm run json-server\"" (Comandos que se correrán)
+- 
+
+### Opcional
+- Implementar 'npm install crypto' para manejar en un futuro la encriptación de datos sensibles como tablas como MetodoPago.
 
  
