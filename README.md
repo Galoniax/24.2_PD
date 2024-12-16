@@ -68,5 +68,6 @@
 
 ### Opcional
 - Implementar 'npm install crypto' para manejar en un futuro la encriptación de datos sensibles como tablas como MetodoPago.
+- Como mejora implementar Multer o Cloudinary para insertar imágenes a la base de datos.
 
  
