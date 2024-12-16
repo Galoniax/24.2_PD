@@ -119,7 +119,7 @@ const ProductModal = ({
                   const validInput = inputValue.replace(/[^0-9.]/g, "");
                   setPrice(validInput);
                 }}
-                value={price || 0}
+                value={price}
                 className="border p-2 rounded w-full text-[14px] text-[#272727]"
               />
             </label>

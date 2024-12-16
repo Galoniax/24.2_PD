@@ -28,7 +28,7 @@ export function Sidebar({ onClose }) {
   };
 
   const handleQuantityChange = (itemId, newQuantity) => {
-    const quantity = Math.max(1, parseInt(newQuantity) || 1);
+    const quantity = Math.max(1, parseInt(newQuantity));
     updateQuantity(itemId, quantity);
   };
 
@@ -43,7 +43,7 @@ export function Sidebar({ onClose }) {
           alt="Logo"
         />
         <h2 className="text-[17px] text-[#ffffff] p-4 font-bold">
-          Carrito de {user.username}
+          Carrito de {user?.username}
         </h2>
       </div>
 

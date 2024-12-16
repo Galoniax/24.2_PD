@@ -69,6 +69,10 @@ export const AuthProvider = ({ children }) => {
         toast.success(response.data.message || "Registro exitoso");
         navigate(ROUTES.LOGIN);
       } 
+
+      if (response.status === 409) {
+        toast.error(response.data.message || "El email ya esta registrado");
+      }
   
       return response;
     } catch (error) {
