@@ -1,11 +1,16 @@
 # 24.2_PD - SoundWave
+
+# Creación de React
+- pnpm create vite
+- pnpm install react-router-dom
+- npm install axios
+
 ## Scripts para levantar
 - npm run dev: Inicia la aplicación en modo desarrollo usando Vite. Usar comando en carpetas backend y frontend.
   // npm run json-server: Inicia el servidor JSON Server para simular una API REST, observando el archivo db.json en el directorio ../backend/db en el puerto 3001.
   // npm run start: Inicia ambos comandos (json-server & run dev) con Concurrently.
 - docker-compose up: Levanta docker y la base de datos.
 - npx prisma db seed: Levanta los datos necesarios para agregar variedad (admin).
-
 
 ## Dependencias 
 ### Principales
@@ -64,7 +69,6 @@
 ### Concurrently
 - ("scripts")
 - "start": "concurrently \"npm run dev\" \"npm run json-server\"" (Comandos que se correrán)
-- 
 
 ### Opcional
 - Implementar 'npm install crypto' para manejar en un futuro la encriptación de datos sensibles como tablas como MetodoPago.
