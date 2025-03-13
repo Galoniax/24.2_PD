@@ -58,7 +58,7 @@
 
 ## Estilos
 - Este proyecto utiliza Tailwind CSS para el estilo y diseño
-- npm install -D tailwindcss postcss autoprefixer
+- npm/pnpm install -D tailwindcss
 - npx tailwindcss init -p
 - pnpm i --save @fortawesome/fontawesome-svg-core
 
